@@ -1,7 +1,7 @@
 # NIRO-PI — Network Incident Response Orchestrator
 
 Hệ thống phân tích và phản ứng sự cố mạng tự động sử dụng LLM.
-Chạy trên **PI framework** — mở Claude Code trong thư mục này để dùng.
+Chạy trên **PI framework** 
 
 ## Quick Start
 
