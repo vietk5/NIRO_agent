@@ -1,0 +1,9 @@
+{
+  "ticket_id": "INC-20260611-EXFIL-001",
+  "alert_id": "EXFIL-001",
+  "severity": "HIGH",
+  "summary": "DATA_EXFILTRATION from 192.168.1.55 | MITRE: T1041",
+  "assigned_to": "SOC-TEAM",
+  "status": "OPEN",
+  "created_at": "2026-06-11T19:06:09.619085+00:00"
+}

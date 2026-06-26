@@ -1,0 +1,9 @@
+{
+  "ticket_id": "INC-20260611-AUTO-001",
+  "alert_id": "AUTO-001",
+  "severity": "HIGH",
+  "summary": "SSH_BRUTE_FORCE from 185.220.101.34 | MITRE: T1110.001",
+  "assigned_to": "SOC-TEAM",
+  "status": "OPEN",
+  "created_at": "2026-06-11T16:24:13.505975+00:00"
+}

@@ -1,0 +1,7 @@
+[BATCH] Loaded 3 alert(s) from 3 file(s) in data\input\alerts\latest3
+[BATCH] 3 alert(s) | max_concurrent=3 | timeout=300s | auto_approve=True
+[BATCH] Khởi động 3 subagent(s)...
+
+  [WORKER 01] START  BF-001  (185.220.101.34)
+  [WORKER 02] START  DNS-001  (203.0.113.45)
+  [WORKER 03] START  WEB-001  (91.92.251.103)

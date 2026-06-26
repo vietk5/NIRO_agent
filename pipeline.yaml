@@ -1,0 +1,96 @@
+# pipeline.yaml — NIRO Pipeline Configuration
+#
+# mode: parallel   → các agent trong stage chạy ĐỒNG THỜI (asyncio.gather)
+# mode: sequential → các agent chạy TUẦN TỰ, từng cái một
+#
+# enabled: false   → bỏ qua toàn bộ stage hoặc agent cụ thể
+# timeout_sec      → timeout tối đa cho mỗi agent (giây)
+#
+# Luồng thực thi hiện tại:
+#   Stage 0  →  Stage 1 (parallel×3)  →  Stage 2 (parallel×2)
+#   →  Stage 2C (sequential)  →  Stage 3A (sequential)  →  Stage 3B (sequential)
+
+stages:
+
+  # ────────────────────────────────────────────────────────────
+  # STAGE 0: TRIAGE
+  # Luôn chạy tuần tự — kết quả routing quyết định có chạy tiếp không
+  # action=close_fp → dừng pipeline ngay
+  # action=monitor/escalate → tiếp tục Stage 1
+  # ────────────────────────────────────────────────────────────
+  stage0_triage:
+    name: "Triage"
+    mode: sequential          # không thay đổi (chỉ có 1 agent)
+    timeout_sec: 20
+    enabled: true
+
+  # ────────────────────────────────────────────────────────────
+  # STAGE 1: DATA COLLECTION — 3 agents
+  # Mặc định: parallel (3 agent chạy cùng lúc, tiết kiệm ~60s)
+  # Đổi thành sequential nếu cần debug từng bước
+  # ────────────────────────────────────────────────────────────
+  stage1_collection:
+    name: "Data Collection"
+    mode: parallel            # ← đổi thành 'sequential' để chạy tuần tự
+    timeout_sec: 30           # timeout cho MỖI agent (giây)
+    enabled: true
+    agents:
+      recon:
+        enabled: true         # ← false để bỏ qua AbuseIPDB / VirusTotal / port scan
+      log_collect:
+        enabled: true         # ← false để bỏ qua đọc auth/firewall/syslog
+      pcap:
+        enabled: true         # ← false nếu không có PCAP data
+
+  # ────────────────────────────────────────────────────────────
+  # STAGE 2: ANALYSIS — 2 agents
+  # Mặc định: parallel (ML Classifier + MITRE Mapper chạy cùng lúc)
+  # MITRE Mapper rất nhanh (~100ms, pure Python cosine similarity)
+  # ML Classifier gọi LLM API → có thể chậm hơn (~8-10s)
+  # ────────────────────────────────────────────────────────────
+  stage2_analysis:
+    name: "Analysis"
+    mode: parallel            # ← đổi thành 'sequential' để chạy tuần tự
+    timeout_sec: 60
+    enabled: true
+    agents:
+      ml_classify:
+        enabled: true         # ← false để bỏ qua LLM classification (RandomForest + LLM)
+      mitre_map:
+        enabled: true         # ← false để bỏ qua MITRE ATT&CK cosine mapping
+
+  # ────────────────────────────────────────────────────────────
+  # STAGE 2C: ORCHESTRATOR + INVESTIGATOR SUBAGENTS
+  # Luôn sequential — Orchestrator LLM tự quyết định spawn subagent nào
+  # Subagents: bruteforce / ddos / portscan / general
+  # Giải quyết conflict giữa Stage 2A và 2B, đưa ra final verdict
+  # ────────────────────────────────────────────────────────────
+  stage2c_orchestrator:
+    name: "Orchestrator"
+    mode: sequential          # không thay đổi (LLM điều phối subagents tuần tự)
+    timeout_sec: 120          # orchestrator max_iterations=12 + mỗi subagent max_iterations=10
+    enabled: true             # ← false để bỏ qua subagent, dùng kết quả Stage 2A/2B trực tiếp
+
+  # ────────────────────────────────────────────────────────────
+  # STAGE 3A: RESPONSE — human-in-the-loop approval gate
+  # Luôn sequential — cần kết quả đầy đủ từ tất cả stages trước
+  # Non-destructive actions (ticket, notify): chạy ngay, không cần approve
+  # Destructive actions (block_ip, isolate_host): cần analyst approve
+  # Cơ chế: sys.exit(2) → PI hỏi user → --resume → chỉ chạy lại 3A+3B
+  # ────────────────────────────────────────────────────────────
+  stage3a_response:
+    name: "Response"
+    mode: sequential          # không thay đổi (cần human approval gate)
+    timeout_sec: 300          # 5 phút để analyst kịp approve
+    enabled: true             # ← false để skip toàn bộ response actions
+
+  # ────────────────────────────────────────────────────────────
+  # STAGE 3B: REPORT
+  # Luôn sequential, luôn chạy (kể cả khi triage = false positive)
+  # Output: reports/{ip}_{timestamp}_incident.md
+  # ────────────────────────────────────────────────────────────
+  stage3b_report:
+    name: "Report"
+    mode: sequential          # không thay đổi
+    timeout_sec: 60
+    enabled: true             # ← false để không lưu report file (chỉ print ra terminal)

@@ -1,0 +1,14 @@
+{
+  "alert_id":      "DDOS-001",
+  "src_ip":        "198.51.100.77",
+  "dst_ip":        "192.168.1.10",
+  "dst_port":      80,
+  "protocol":      "TCP",
+  "rf_class":      "DDoS",
+  "ml_confidence": 0.95,
+  "bytes_in":      9800000,
+  "bytes_out":     12000,
+  "packets":       85000,
+  "duration":      60.0,
+  "description":   "SYN flood — 85000 packets in 60s, conntrack table full"
+}

@@ -1,0 +1,29 @@
+{
+  "routing": {
+    "action": "escalate",
+    "priority": 9,
+    "justification": "Web vulnerability scan từ IP công cộng (91.92.251.103) nhắm vào server nội bộ (192.168.1.10). Quét hàng loạt endpoint nhạy cảm (/admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql) — dấu hiệu tấn công có chủ đích. ML confidence 0.85, cần phản ứng ngay để chặn IP và kiểm tra server.",
+    "key_indicators": [
+      "src_ip là IP công cộng lạ",
+      "quét nhiều endpoint nhạy cảm",
+      "ml_confidence=0.85",
+      "target là IP nội bộ",
+      "rf_class=WebScan"
+    ]
+  },
+  "alert": {
+    "alert_id": "WEB-001",
+    "src_ip": "91.92.251.103",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 80,
+    "protocol": "TCP",
+    "rf_class": "WebScan",
+    "ml_confidence": 0.85,
+    "bytes_in": 2400,
+    "bytes_out": 1800,
+    "packets": 180,
+    "duration": 15.0,
+    "description": "Web vulnerability scan — probing /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql"
+  },
+  "error": null
+}

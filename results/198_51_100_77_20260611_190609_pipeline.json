@@ -1,0 +1,235 @@
+{
+  "alert": {
+    "alert_id": "DDOS-001",
+    "src_ip": "198.51.100.77",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 80,
+    "protocol": "TCP",
+    "rf_class": "DDoS",
+    "ml_confidence": 0.95,
+    "bytes_in": 9800000,
+    "bytes_out": 12000,
+    "packets": 85000,
+    "duration": 60.0,
+    "description": "SYN flood \u2014 85000 packets in 60s, conntrack table full",
+    "timestamp": "2026-06-11T19:05:16.216859+00:00"
+  },
+  "triage_result": {
+    "routing": {
+      "action": "escalate",
+      "priority": 9,
+      "justification": "SYN flood DDoS r\u00f5 r\u00e0ng t\u1eeb IP c\u00f4ng c\u1ed9ng (198.51.100.77) v\u00e0o internal server (192.168.1.10:80). ML confidence 0.95, 85,000 packets trong 60s (~1,416 pps), 9.8MB inbound traffic. Conntrack table \u0111\u00e3 \u0111\u1ea7y \u2014 h\u1ec7 th\u1ed1ng \u0111ang b\u1ecb \u1ea3nh h\u01b0\u1edfng. C\u1ea7n ph\u1ea3n \u1ee9ng ngay \u0111\u1ec3 ch\u1eb7n ngu\u1ed3n v\u00e0 gi\u1ea3m t\u1ea3i.",
+      "key_indicators": [
+        "SYN flood attack",
+        "85,000 packets / 60s",
+        "Conntrack table full",
+        "ML confidence 0.95",
+        "Ngu\u1ed3n IP c\u00f4ng c\u1ed9ng t\u1ea5n c\u00f4ng internal target"
+      ]
+    },
+    "alert": {
+      "alert_id": "DDOS-001",
+      "src_ip": "198.51.100.77",
+      "dst_ip": "192.168.1.10",
+      "dst_port": 80,
+      "protocol": "TCP",
+      "rf_class": "DDoS",
+      "ml_confidence": 0.95,
+      "bytes_in": 9800000,
+      "bytes_out": 12000,
+      "packets": 85000,
+      "duration": 60.0,
+      "description": "SYN flood \u2014 85000 packets in 60s, conntrack table full",
+      "timestamp": "2026-06-11T19:05:16.216859+00:00"
+    },
+    "error": null
+  },
+  "stage1_results": {
+    "pcap": {
+      "flow_features": {
+        "packet_count": 85000,
+        "total_bytes": 9812000,
+        "duration_sec": 60.0,
+        "packets_per_sec": 1416.67,
+        "bytes_per_packet": 115.4,
+        "bytes_per_sec": 163533.3,
+        "dst_port": 80,
+        "bytes_in": 9800000,
+        "bytes_out": 12000,
+        "payload_entropy": 2.1,
+        "syn_count": 68000,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [
+        "HIGH_PACKET_RATE",
+        "HIGH_SYN_COUNT",
+        "HIGH_BANDWIDTH"
+      ],
+      "flow_signature_match": "DDOS_SYN_FLOOD",
+      "risk_score": 1.0,
+      "error": null
+    },
+    "log_collect": {
+      "auth_log_events": [],
+      "firewall_events": [],
+      "syslog_events": [
+        "# SYN Flood / DDoS t\u00e1\u00bb\u00ab 198.51.100.77",
+        "Jun 11 07:00:01 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77",
+        "Jun 11 07:00:02 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77",
+        "Jun 11 07:00:03 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77",
+        "Jun 11 07:00:04 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77",
+        "Jun 11 07:00:05 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77",
+        "Jun 11 07:00:15 server kernel: possible SYN flooding detected, source: 198.51.100.77",
+        "Jun 11 07:01:00 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77",
+        "Jun 11 07:01:01 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77",
+        "Jun 11 07:01:02 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77"
+      ],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T16:12:58.157395+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"DDOS-001\", \"src_ip\": \"198.51.100.77\", \"rf_class\": \"DDoS\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"866e61b6a89ce4d9d69556facc0c130978a28c903ca1640e2b243a158691d901\"}",
+        "{\"ts\": \"2026-06-11T16:13:06.376157+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"198.51.100.77\", \"prev_hash\": \"58a8e7b77427db41ba0861fcb990c678848ae0d2d469573ab36c0d41488da0d3\", \"hash\": \"b535e62450a1fa0a0f840e8a7a3114b121f1fd4437cfb36f22220eaae1d14058\"}",
+        "{\"ts\": \"2026-06-11T16:17:01.603037+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"DDOS-001\", \"src_ip\": \"198.51.100.77\", \"rf_class\": \"DDoS\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"1cc6743110e12509fd4ebe3613c886feb7663bb858532fdcc03cec976eb77202\"}",
+        "{\"ts\": \"2026-06-11T16:17:10.666162+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"198.51.100.77\", \"prev_hash\": \"367770efa89243e8ac2cfd11325d07b7d016965b951a158e2450d1cb0a8a8f04\", \"hash\": \"0d67be46a3be32c2f6ea7c127b098aadec89fad8c0d681ccc2c64cf1a8bb98c9\"}",
+        "{\"ts\": \"2026-06-11T16:25:02.284831+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"AUTO-003\", \"src_ip\": \"198.51.100.77\", \"rf_class\": \"DDoS\", \"prev_hash\": \"c26b3d2de6628773c2b945355428b5a1210555c39834573f53b850c5b2345a26\", \"hash\": \"3712470de5dc4c22601323c87a2da5d73eccf1f1e8ab1b903ccf6267ac82cecd\"}",
+        "{\"ts\": \"2026-06-11T16:25:09.454510+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"198.51.100.77\", \"prev_hash\": \"c92c8303021a83b95789e7708990b4b484773f66287dd578a518657967d8822d\", \"hash\": \"b6713fe69b10c98d05521786713e2efdbce093d377dacd2592ba86f84ab90b02\"}",
+        "{\"ts\": \"2026-06-11T18:50:43.273109+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"198.51.100.77\", \"prev_hash\": \"a8b1ce6c3d4c02ba91d8490cb710e57394a011e5f8130c26861021af1d863de2\", \"hash\": \"016256bafbb4764db5c28e757225f0449f32f9638d0fce03715a5a1e254de00b\"}",
+        "{\"ts\": \"2026-06-11T19:05:16.216868+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"DDOS-001\", \"src_ip\": \"198.51.100.77\", \"rf_class\": \"DDoS\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"74fada5c63de4da05779de693365a68fb357f5441fc45cb21849604551304f71\"}",
+        "{\"ts\": \"2026-06-11T19:05:26.046180+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"198.51.100.77\", \"prev_hash\": \"1cb920284e43f65390833984c95724ea13e8c2cc77d325495486227e65b245a4\", \"hash\": \"0e0abd38fd307e6bebcdc750ac07b3e521e8ef0127ab2f172a229ac521c1e34d\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 0,
+        "blocked_connections": 0,
+        "targeted_ports": [
+          80
+        ],
+        "attack_pattern": "DDOS",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "recon": {
+      "error": "Timeout after 30.0s",
+      "timed_out": true
+    }
+  },
+  "stage2_results": {
+    "mitre_map": {
+      "query_vector": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0769,
+        0.0003,
+        0.2625,
+        0.0,
+        0.5,
+        0.95
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.6262,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.2071,
+          "description": "Learned centroid from training data (T1498)"
+        },
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.1667,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "T1041",
+          "name": "Exfiltration Over C2 Channel",
+          "tactic": "Exfiltration",
+          "similarity": 0.0,
+          "description": "Learned centroid from training data (T1041)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.0,
+          "description": "Learned centroid from training data (T1110.001)"
+        }
+      ],
+      "best_technique": "BENIGN",
+      "best_technique_name": "False Positive / Benign Traffic",
+      "best_tactic": "N/A",
+      "best_similarity": 0.6262,
+      "is_known_technique": false,
+      "is_anomaly": false,
+      "anomaly_score": -0.5775,
+      "model_used": "sklearn:RandomForestClassifier",
+      "technique_risk_score": 0.188,
+      "error": null
+    },
+    "ml_classify": {
+      "classification": {
+        "incident_type": "DDOS",
+        "severity": "HIGH",
+        "mitre_technique": "T1498",
+        "mitre_tactic": "Impact (TA0040)",
+        "confidence": 0.95,
+        "is_true_positive": true,
+        "rationale": "Ph\u00e1t hi\u1ec7n SYN flood DDoS t\u1eeb IP 198.51.100.77 (public) nh\u1eafm v\u00e0o port 80 c\u1ee7a 192.168.1.10. T\u1ed1c \u0111\u1ed9 1,416.67 pps v\u01b0\u1ee3t xa ng\u01b0\u1ee1ng 500, bytes/packet th\u1ea5p (115.4) \u0111\u1eb7c tr\u01b0ng SYN flood. PCAP signature kh\u1edbp DDOS_SYN_FLOOD v\u1edbi 3 anomalies (HIGH_PACKET_RATE, HIGH_SYN_COUNT, HIGH_BANDWIDTH). C\u1ea3 3 ngu\u1ed3n Stage 1 (Recon, Logs, PCAP) \u0111\u1ec1u x\u00e1c nh\u1eadn DDoS pattern. AbuseIPDB score = 0 (kh\u00f4ng c\u00f3 ti\u1ec1n s\u1eed) n\u00ean kh\u00f4ng \u0111\u1ea1t CRITICAL. Conntrack table full g\u00e2y impact operational.",
+        "secondary_techniques": [
+          "T1498.001 - Direct Network Flood"
+        ]
+      },
+      "containment_steps": [
+        "Rate-limit traffic t\u1eeb ASN ngu\u1ed3n",
+        "B\u1eadt DDoS mitigation (Cloudflare/AWS Shield)",
+        "Li\u00ean h\u1ec7 upstream ISP \u0111\u1ec3 null-route",
+        "K\u00edch ho\u1ea1t traffic scrubbing"
+      ],
+      "mitre_details": {
+        "name": "Network Denial of Service",
+        "tactic": "Impact",
+        "containment": [
+          "Rate-limit traffic t\u1eeb ASN ngu\u1ed3n",
+          "B\u1eadt DDoS mitigation (Cloudflare/AWS Shield)",
+          "Li\u00ean h\u1ec7 upstream ISP \u0111\u1ec3 null-route",
+          "K\u00edch ho\u1ea1t traffic scrubbing"
+        ]
+      },
+      "secondary_techniques": [
+        "T1498.001 - Direct Network Flood"
+      ],
+      "error": null
+    }
+  },
+  "response_result": {
+    "ticket_id": "INC-20260611-DDOS-001",
+    "actions_taken": [
+      "created_ticket:INC-20260611-DDOS-001",
+      "notified_analyst",
+      "blocked_ip:198.51.100.77"
+    ],
+    "blocked_ips": [
+      "198.51.100.77"
+    ],
+    "severity": "HIGH",
+    "error": null
+  },
+  "report": {
+    "incident_id": "INC-20260611_190609-DDOS-001",
+    "report_path": "reports\\198_51_100_77_20260611_190609_incident.md",
+    "outcome": "BLOCKED",
+    "error": null
+  },
+  "outcome": "BLOCKED",
+  "error": null,
+  "pipeline_duration_sec": 53.44
+}

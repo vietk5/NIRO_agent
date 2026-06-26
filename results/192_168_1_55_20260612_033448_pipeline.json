@@ -1,0 +1,231 @@
+{
+  "alert": {
+    "alert_id": "EXFIL-001",
+    "src_ip": "192.168.1.55",
+    "dst_ip": "104.21.45.200",
+    "dst_port": 443,
+    "protocol": "TCP",
+    "rf_class": "Exfiltration",
+    "ml_confidence": 0.79,
+    "bytes_in": 4200,
+    "bytes_out": 7977239,
+    "packets": 5340,
+    "duration": 300.0,
+    "description": "Large outbound transfer 7.9MB to external IP \u2014 possible data exfiltration",
+    "timestamp": "2026-06-12T03:33:56.910299+00:00"
+  },
+  "triage_result": {
+    "routing": {
+      "action": "escalate",
+      "priority": 8,
+      "justification": "Ph\u00e1t hi\u1ec7n exfiltration r\u00f5 r\u00e0ng: host n\u1ed9i b\u1ed9 192.168.1.55 g\u1eedi 7.9MB ra ngo\u1ea1i m\u1ea1ng (104.21.45.200) trong 5 ph\u00fat, trong khi ch\u1ec9 nh\u1eadn 4.2KB. T\u1ef7 l\u1ec7 out/in ~1900x, ML confidence 0.79, kh\u1edbp v\u1edbi RF class Exfiltration. C\u1ea7n ph\u1ea3n \u1ee9ng ngay \u0111\u1ec3 ng\u0103n ch\u1eb7n r\u00f2 r\u1ec9 d\u1eef li\u1ec7u.",
+      "key_indicators": [
+        "bytes_out (7.9MB) g\u1ea5p ~1900 l\u1ea7n bytes_in (4.2KB)",
+        "ML confidence 0.79",
+        "RF class: Exfiltration",
+        "Ngu\u1ed3n n\u1ed9i b\u1ed9 ra external IP",
+        "Duration 300s v\u1edbi throughput \u1ed5n \u0111\u1ecbnh"
+      ]
+    },
+    "alert": {
+      "alert_id": "EXFIL-001",
+      "src_ip": "192.168.1.55",
+      "dst_ip": "104.21.45.200",
+      "dst_port": 443,
+      "protocol": "TCP",
+      "rf_class": "Exfiltration",
+      "ml_confidence": 0.79,
+      "bytes_in": 4200,
+      "bytes_out": 7977239,
+      "packets": 5340,
+      "duration": 300.0,
+      "description": "Large outbound transfer 7.9MB to external IP \u2014 possible data exfiltration",
+      "timestamp": "2026-06-12T03:33:56.910299+00:00"
+    },
+    "error": null
+  },
+  "stage1_results": {
+    "pcap": {
+      "flow_features": {
+        "packet_count": 5340,
+        "total_bytes": 7981439,
+        "duration_sec": 300.0,
+        "packets_per_sec": 17.8,
+        "bytes_per_packet": 1494.7,
+        "bytes_per_sec": 26604.8,
+        "dst_port": 443,
+        "bytes_in": 4200,
+        "bytes_out": 7977239,
+        "payload_entropy": 7.2,
+        "syn_count": 0,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [
+        "ASYMMETRIC_FLOW_OUT",
+        "HIGH_PAYLOAD_ENTROPY"
+      ],
+      "flow_signature_match": "DATA_EXFILTRATION",
+      "risk_score": 0.99,
+      "error": null
+    },
+    "log_collect": {
+      "auth_log_events": [],
+      "firewall_events": [],
+      "syslog_events": [
+        "# Data Exfiltration nghi ng\u00e1\u00bb\ufffd t\u00e1\u00bb\u00ab internal host 192.168.1.55",
+        "Jun 11 10:30:00 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500",
+        "Jun 11 10:30:01 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500",
+        "Jun 11 10:30:02 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500",
+        "Jun 11 10:30:03 server rsyslogd: large outbound transfer detected: 192.168.1.55 to 104.21.45.200 bytes=2847392",
+        "Jun 11 10:30:05 server rsyslogd: large outbound transfer detected: 192.168.1.55 to 104.21.45.200 bytes=5129847"
+      ],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T16:26:40.803704+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"AUTO-005\", \"src_ip\": \"192.168.1.55\", \"rf_class\": \"Exfiltration\", \"prev_hash\": \"799be58819eb7b455ba3f0ba589c2c9511c6c8f4e5629320c533d04e89d8f1ed\", \"hash\": \"d6603081ffe3c6a98d6d7e5a201bfad496453d69bebee8677f2139c1fc77a860\"}",
+        "{\"ts\": \"2026-06-11T16:26:49.216222+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"192.168.1.55\", \"prev_hash\": \"382a92c3eac817cb71218e375f54916d5ea10000ea8b7260802d309d91fc9f46\", \"hash\": \"e43e078214d6c370a1b540f355e2e486ee0d068b360eb6a0c2c9fa1209ea7667\"}",
+        "{\"ts\": \"2026-06-11T18:50:32.622044+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"EXFIL-001\", \"src_ip\": \"192.168.1.55\", \"rf_class\": \"Exfiltration\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"3874ea9f7d197701360d7f8c256b332d7eae85a5b4c0e72366f5cad7a279e1bd\"}",
+        "{\"ts\": \"2026-06-11T18:50:43.211899+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"192.168.1.55\", \"prev_hash\": \"75e1fdc3c33aefe477e5686d8ed91de162b7a2d23b36b850395b7161d7d434db\", \"hash\": \"a20ef762735ed22510b076b30e49fa139a7978e1270e66e165fa026478451d9b\"}",
+        "{\"ts\": \"2026-06-11T19:05:16.217383+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"EXFIL-001\", \"src_ip\": \"192.168.1.55\", \"rf_class\": \"Exfiltration\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"f9513f409d84c7b488ba8427b3b69817766e9fee91aa5d3794e6a247bcd6048b\"}",
+        "{\"ts\": \"2026-06-11T19:05:25.882662+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"192.168.1.55\", \"prev_hash\": \"5bd8d0a56234b657308edd178db26dd7b36d8c44bdbabcca8fec65cf02b7a840\", \"hash\": \"73d76c491b8702dc60486974381a65c427aeadda215dea70b04e7490f6cfa728\"}",
+        "{\"ts\": \"2026-06-12T03:33:56.910299+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"EXFIL-001\", \"src_ip\": \"192.168.1.55\", \"rf_class\": \"Exfiltration\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"2818e101c368bbbc9ecbcf2151b7e7e365e2ae7c890b3424855e253f55838c09\"}",
+        "{\"ts\": \"2026-06-12T03:34:05.937083+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"192.168.1.55\", \"prev_hash\": \"5a57aa087a317edcd1c11d3bcbd32e80a606f90a16ead4befc71bda344445d0d\", \"hash\": \"e9f94b14a04260a0ace950423fbe9402158c770d3ce7497049cfc10d873ae366\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 0,
+        "blocked_connections": 0,
+        "targeted_ports": [
+          443
+        ],
+        "attack_pattern": "DATA_EXFILTRATION",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "recon": {
+      "error": "Timeout after 30.0s",
+      "timed_out": true
+    }
+  },
+  "stage2_results": {
+    "mitre_map": {
+      "query_vector": [
+        0.0,
+        0.0,
+        0.0,
+        0.4719,
+        0.9965,
+        1.0,
+        0.9,
+        0.0,
+        0.3333,
+        0.79
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.5832,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.4873,
+          "description": "Learned centroid from training data (T1498)"
+        },
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.4812,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.472,
+          "description": "Learned centroid from training data (T1110.001)"
+        },
+        {
+          "technique_id": "T1595.001",
+          "name": "Active Scanning: Scanning IP Blocks",
+          "tactic": "Reconnaissance",
+          "similarity": 0.4688,
+          "description": "Learned centroid from training data (T1595.001)"
+        }
+      ],
+      "best_technique": "BENIGN",
+      "best_technique_name": "False Positive / Benign Traffic",
+      "best_tactic": "N/A",
+      "best_similarity": 0.5832,
+      "is_known_technique": false,
+      "is_anomaly": false,
+      "anomaly_score": null,
+      "model_used": "cosine_similarity",
+      "technique_risk_score": 0.175,
+      "error": null
+    },
+    "ml_classify": {
+      "classification": {
+        "incident_type": "DATA_EXFILTRATION",
+        "severity": "HIGH",
+        "mitre_technique": "T1041",
+        "mitre_tactic": "Exfiltration",
+        "confidence": 0.82,
+        "is_true_positive": false,
+        "rationale": "Ph\u00e1t hi\u1ec7n DATA_EXFILTRATION v\u1edbi evidence \u0111\u1ed3ng thu\u1eadn t\u1eeb c\u1ea3 3 ngu\u1ed3n Stage 1: (1) Alert g\u1ed1c ch\u1ec9 ra bytes_out (7.9MB) g\u1ea5p ~1900 l\u1ea7n bytes_in (4.2KB) qua c\u1ed5ng 443 HTTPS; (2) Stage 1B logs x\u00e1c nh\u1eadn attack pattern DATA_EXFILTRATION; (3) Stage 1C PCAP flow signature kh\u1edbp DATA_EXFILTRATION k\u00e8m anomalies ASYMMETRIC_FLOW_OUT v\u00e0 HIGH_PAYLOAD_ENTROPY. Tuy nhi\u00ean src_ip=192.168.1.55 l\u00e0 \u0111\u1ecba ch\u1ec9 RFC-1918 (private), do \u0111\u00f3 is_true_positive=False \u2014 \u0111\u00e2y c\u00f3 th\u1ec3 l\u00e0 internal user th\u1ef1c hi\u1ec7n upload h\u1ee3p ph\u00e1p ho\u1eb7c compromised internal host. Severity HIGH d\u1ef1a tr\u00ean threat_score ~79 v\u00e0 2 ngu\u1ed3n Stage 1 x\u00e1c nh\u1eadn m\u1ea1nh. MITRE mapping: T1041 (Exfiltration Over C2 Channel) v\u1edbi secondary technique T1071.001 (Web Protocols) do s\u1eed d\u1ee5ng HTTPS.",
+        "secondary_techniques": [
+          "T1071.001"
+        ]
+      },
+      "containment_steps": [
+        "L\u1eadp t\u1ee9c block destination IP/domain",
+        "C\u00f4 l\u1eadp m\u00e1y ch\u1ee7 ngu\u1ed3n kh\u1ecfi m\u1ea1ng",
+        "Capture v\u00e0 ph\u00e2n t\u00edch egress traffic",
+        "T\u00ecm v\u00e0 xo\u00e1 malware/backdoor",
+        "Ki\u1ec3m tra d\u1eef li\u1ec7u n\u00e0o \u0111\u00e3 b\u1ecb l\u1ea5y \u0111i",
+        "B\u00e1o c\u00e1o DPO n\u1ebfu c\u00f3 PII b\u1ecb exfil"
+      ],
+      "mitre_details": {
+        "name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "containment": [
+          "L\u1eadp t\u1ee9c block destination IP/domain",
+          "C\u00f4 l\u1eadp m\u00e1y ch\u1ee7 ngu\u1ed3n kh\u1ecfi m\u1ea1ng",
+          "Capture v\u00e0 ph\u00e2n t\u00edch egress traffic",
+          "T\u00ecm v\u00e0 xo\u00e1 malware/backdoor",
+          "Ki\u1ec3m tra d\u1eef li\u1ec7u n\u00e0o \u0111\u00e3 b\u1ecb l\u1ea5y \u0111i",
+          "B\u00e1o c\u00e1o DPO n\u1ebfu c\u00f3 PII b\u1ecb exfil"
+        ]
+      },
+      "secondary_techniques": [
+        "T1071.001"
+      ],
+      "error": null
+    }
+  },
+  "response_result": {
+    "ticket_id": "INC-20260612-EXFIL-001",
+    "actions_taken": [
+      "created_ticket:INC-20260612-EXFIL-001",
+      "notified_analyst",
+      "block_skipped:RFC-1918 private address \u2014 kh\u00f4ng block IP n\u1ed9i b\u1ed9"
+    ],
+    "blocked_ips": [],
+    "severity": "HIGH",
+    "error": null
+  },
+  "report": {
+    "incident_id": "INC-20260612_033448-EXFIL-001",
+    "report_path": "reports\\192_168_1_55_20260612_033448_incident.md",
+    "outcome": "ESCALATED",
+    "error": null
+  },
+  "outcome": "ESCALATED",
+  "error": null,
+  "pipeline_duration_sec": 51.3
+}

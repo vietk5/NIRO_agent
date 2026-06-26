@@ -1,0 +1,353 @@
+{
+  "alert": {
+    "alert_id": "WEB-001",
+    "src_ip": "91.92.251.103",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 80,
+    "protocol": "TCP",
+    "rf_class": "WebScan",
+    "ml_confidence": 0.85,
+    "bytes_in": 2400,
+    "bytes_out": 1800,
+    "packets": 180,
+    "duration": 15.0,
+    "description": "Web vulnerability scan — probing /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql"
+  },
+  "alert_path": "data/input/alerts/webscan.json",
+  "save": true,
+  "verbose": true,
+  "routing": {
+    "action": "escalate",
+    "priority": 9,
+    "justification": "Web vulnerability scan từ IP công cộng (91.92.251.103) nhắm vào internal server (192.168.1.10:80). Quét hàng loạt endpoint nhạy cảm: /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql. ML confidence cao (0.85). Hành vi tấn công rõ ràng, cần chặn ngay và điều tra thêm.",
+    "key_indicators": [
+      "src_ip là IP công cộng (91.92.251.103)",
+      "Quét nhiều endpoint nhạy cảm (admin, wp-admin, phpmyadmin, .env, shell.php, .git/config, backup.sql)",
+      "ML confidence = 0.85",
+      "Nhắm vào internal server (192.168.1.10)",
+      "RF Class: WebScan"
+    ]
+  },
+  "action": "escalate",
+  "priority": 9,
+  "stage1": {
+    "recon": {
+      "risk_profile": {},
+      "skipped": true
+    },
+    "log_collect": {
+      "auth_log_events": [],
+      "firewall_events": [
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 15 13:17:08 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80"
+      ],
+      "syslog_events": [
+        "Jun 15 13:17:08 server kernel: possible SYN flooding on port 80 from 91.92.251.103"
+      ],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T16:27:32.772108+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"AUTO-006\", \"src_ip\": \"91.92.251.103\", \"rf_class\": \"VulnScan\", \"prev_hash\": \"f3e084f8c2acd474628aac26749624d4773e1bb268d40a1c82614b5da4aeff57\", \"hash\": \"c1cee0de048287454279e7aa92cf39b20f7a307c8279aea0d124472023f9989a\"}",
+        "{\"ts\": \"2026-06-11T16:27:42.657178+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"91.92.251.103\", \"prev_hash\": \"0ab00455c1f0812d725634d4af8bc22a752907c82331c3109c88973edd75a8ef\", \"hash\": \"d87ef20153496113a357884f94e75ac7cbb6a25b2045cc31a548b375760ee4ab\"}",
+        "{\"ts\": \"2026-06-12T03:34:55.757467+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"WEB-001\", \"src_ip\": \"91.92.251.103\", \"rf_class\": \"WebScan\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"b0d511dcc421c42fda4dc491a11a8b93e6800540ae44709fc4036b2017c92ee2\"}",
+        "{\"ts\": \"2026-06-12T03:35:06.030108+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"91.92.251.103\", \"prev_hash\": \"451fb36ac9ea733173c2ad6a3f1323ef62c23f5b1b2c4282948e4f167cca7764\", \"hash\": \"74144a4b66732f57aba1c9c6769d562f361d208bea3f4b2db10024861f4183e9\"}",
+        "{\"ts\": \"2026-06-12T13:55:01.483283+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"91.92.251.103\", \"prev_hash\": \"385426c7cd097bc600e3a56fc11a5f3edd8fcf278a1b70d5953a9b1e0b99d36d\", \"hash\": \"5914f976c65fc183004721043912b2e076d0d969c709fd4041383bb50827faeb\"}",
+        "{\"ts\": \"2026-06-12T13:56:08.587523+00:00\", \"event\": \"AGENT_START\", \"agent\": \"orchestrator\", \"info\": \"91.92.251.103\", \"prev_hash\": \"b5b361bce81e177604a83697a25f1e399e018a5d1bae9ead2cbc06779f076714\", \"hash\": \"b567ad404cff9307eb11914f89f624fc8d608f63cec0cd767047ddcbf047b047\"}",
+        "{\"ts\": \"2026-06-12T13:57:06.606125+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"91.92.251.103\", \"prev_hash\": \"eb2bbec66792a97218761450f6bf4b0476662ce508a95ac1ed3c114915c4a699\", \"hash\": \"153d426bf68b33c637c80d2de4ce265d8d150359db117779dbdd859ebeba1d44\"}",
+        "{\"ts\": \"2026-06-12T13:58:28.821997+00:00\", \"event\": \"AGENT_START\", \"agent\": \"orchestrator\", \"info\": \"91.92.251.103\", \"prev_hash\": \"f23b1ecea1a37f300107dcf9f1c379cbf72c18dba2caacc5f54c51921986484a\", \"hash\": \"fb88c12400da424a97792745c9f660d172521bb606fb02e34416d4d942b40852\"}",
+        "{\"ts\": \"2026-06-12T13:59:43.031878+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"91.92.251.103\", \"prev_hash\": \"bb666624c711f2e5355981cc7825cd51ee3ccf62f82961bca019b13948d4177b\", \"hash\": \"711a5cc40c46a892e1aeaf32abb4922e338a7bb421d19ffe2d746bb7861b8199\"}",
+        "{\"ts\": \"2026-06-12T14:01:06.173195+00:00\", \"event\": \"AGENT_START\", \"agent\": \"orchestrator\", \"info\": \"91.92.251.103\", \"prev_hash\": \"181db6e5b312ee576b5c8bb6d6addf62246143e923ac1bf90ffc812060df9aea\", \"hash\": \"7da4f3de8ced8253c90219a44b4870ad70b7ab51059d898d706d7d73f6a74220\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 0,
+        "blocked_connections": 20,
+        "targeted_ports": [
+          80
+        ],
+        "attack_pattern": "UNKNOWN",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "pcap": {
+      "flow_features": {
+        "packet_count": 180,
+        "total_bytes": 4200,
+        "duration_sec": 15.0,
+        "packets_per_sec": 12.0,
+        "bytes_per_packet": 23.3,
+        "bytes_per_sec": 280.0,
+        "dst_port": 80,
+        "bytes_in": 2400,
+        "bytes_out": 1800,
+        "payload_entropy": 4.5,
+        "syn_count": 0,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [],
+      "flow_signature_match": "UNKNOWN",
+      "risk_score": 0.2,
+      "error": null
+    }
+  },
+  "rp": {},
+  "ls": {
+    "failed_auth_count": 0,
+    "blocked_connections": 20,
+    "targeted_ports": [
+      80
+    ],
+    "attack_pattern": "UNKNOWN",
+    "first_seen": "unknown",
+    "last_seen": "unknown",
+    "log_sources_checked": 4
+  },
+  "pcap": {
+    "flow_features": {
+      "packet_count": 180,
+      "total_bytes": 4200,
+      "duration_sec": 15.0,
+      "packets_per_sec": 12.0,
+      "bytes_per_packet": 23.3,
+      "bytes_per_sec": 280.0,
+      "dst_port": 80,
+      "bytes_in": 2400,
+      "bytes_out": 1800,
+      "payload_entropy": 4.5,
+      "syn_count": 0,
+      "source": "derived_from_alert"
+    },
+    "anomaly_indicators": [],
+    "flow_signature_match": "UNKNOWN",
+    "risk_score": 0.2,
+    "error": null
+  },
+  "stage2": {
+    "ml": {
+      "classification": {
+        "incident_type": "PORT_SCAN",
+        "severity": "MEDIUM",
+        "mitre_technique": "T1595.001",
+        "mitre_tactic": "Reconnaissance",
+        "confidence": 0.55,
+        "is_true_positive": true,
+        "rationale": "Alert gốc mô tả web vulnerability scan với các path nhạy cảm (/admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql) từ IP public 91.92.251.103 vào internal server 192.168.1.10:80. Stage 1 sources cho thấy: AbuseIPDB score 0/100 (không reputation xấu), không phải Tor, PCAP không anomaly (PPS=12, BPP=23.3), logs có 20 firewall blocks nhưng pattern UNKNOWN. Evidence từ Stage 1 không confirm mạnh, nhưng alert description rõ ràng về hành vi web directory brute-forcing. Phân loại PORT_SCAN (web scanning) với MEDIUM severity do thiếu evidence đồng thuận từ Stage 1 sources, confidence 0.55.",
+        "secondary_techniques": [
+          "T1595.003"
+        ]
+      },
+      "containment_steps": [
+        "Block source IP tại firewall",
+        "Rate-limit SYN packets từ IP lạ",
+        "Review dịch vụ đang expose — đóng port không cần thiết",
+        "Cài đặt network segmentation"
+      ],
+      "mitre_details": {
+        "name": "Active Scanning: Scanning IP Blocks",
+        "tactic": "Reconnaissance",
+        "containment": [
+          "Block source IP tại firewall",
+          "Rate-limit SYN packets từ IP lạ",
+          "Review dịch vụ đang expose — đóng port không cần thiết",
+          "Cài đặt network segmentation"
+        ]
+      },
+      "secondary_techniques": [
+        "T1595.003"
+      ],
+      "error": null
+    },
+    "mitre": {
+      "query_vector": [
+        0.0,
+        0.0,
+        0.7743,
+        0.4126,
+        0.0155,
+        0.1213,
+        0.5625,
+        0.0,
+        0.0,
+        0.85
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.6891,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.2215,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.0838,
+          "description": "Learned centroid from training data (T1498)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.0053,
+          "description": "Learned centroid from training data (T1110.001)"
+        },
+        {
+          "technique_id": "T1595.001",
+          "name": "Active Scanning: Scanning IP Blocks",
+          "tactic": "Reconnaissance",
+          "similarity": 0.0004,
+          "description": "Learned centroid from training data (T1595.001)"
+        }
+      ],
+      "best_technique": "T1071.001",
+      "best_technique_name": "Application Layer Protocol: Web",
+      "best_tactic": "Command and Control",
+      "best_similarity": 0.6891,
+      "is_known_technique": false,
+      "is_anomaly": true,
+      "anomaly_score": -0.6374,
+      "model_used": "sklearn:RandomForestClassifier",
+      "technique_risk_score": 0.551,
+      "error": null
+    }
+  },
+  "clf": {
+    "incident_type": "PORT_SCAN",
+    "severity": "MEDIUM",
+    "mitre_technique": "T1595.001",
+    "mitre_tactic": "Reconnaissance",
+    "confidence": 0.55,
+    "is_true_positive": true,
+    "rationale": "Alert gốc mô tả web vulnerability scan với các path nhạy cảm (/admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql) từ IP public 91.92.251.103 vào internal server 192.168.1.10:80. Stage 1 sources cho thấy: AbuseIPDB score 0/100 (không reputation xấu), không phải Tor, PCAP không anomaly (PPS=12, BPP=23.3), logs có 20 firewall blocks nhưng pattern UNKNOWN. Evidence từ Stage 1 không confirm mạnh, nhưng alert description rõ ràng về hành vi web directory brute-forcing. Phân loại PORT_SCAN (web scanning) với MEDIUM severity do thiếu evidence đồng thuận từ Stage 1 sources, confidence 0.55.",
+    "secondary_techniques": [
+      "T1595.003"
+    ]
+  },
+  "containment": [
+    "Block source IP tại firewall",
+    "Rate-limit SYN packets từ IP lạ",
+    "Review dịch vụ đang expose — đóng port không cần thiết",
+    "Cài đặt network segmentation"
+  ],
+  "techniques": [],
+  "investigation": {
+    "verdict": {
+      "overall_risk": "medium",
+      "final_action": "block",
+      "verdict_summary": "IP 91.92.251.103 (Bulgaria, Ikt Solutions) thực hiện web vulnerability scanning nhắm vào web server 192.168.1.10. Mặc dù Stage 2A (ML Classifier) phân loại là PORT_SCAN (T1595.001) với confidence thấp 55%, investigator đã xác nhận qua VirusTotal, AbuseIPDB, Shodan và phân tích traffic rằng đây thực chất là WEB_VULNERABILITY_SCAN (MITRE T1595.002). IP đã probe các path nhạy cảm như /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql — đây là hành vi reconnaissance điển hình của kẻ tấn công tìm kiếm lỗ hổng. Dù chưa phát hiện exploitation thành công, hành vi này cần bị chặn để ngăn chặn các bước tấn công tiếp theo. Investigator findings được ưu tiên hơn Stage 2A/2B vì có tool evidence thực tế.",
+      "key_findings": [
+        "IP 91.92.251.103 (BG, Ikt Solutions) thực hiện web vulnerability scanning — không phải port scan",
+        "Probed 7+ sensitive paths: /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql",
+        "VirusTotal phát hiện 2/91 malicious — IP có tiền sử đáng ngờ",
+        "Không có dấu hiệu exploitation thành công, không có C2, không có port mở trên IP nguồn",
+        "MITRE T1595.002 (Vulnerability Scanning) — phù hợp hơn T1595.001 (Active Scanning) do Stage 2A đề xuất"
+      ],
+      "mitre_technique": "T1595.002"
+    },
+    "subagent_findings": [
+      {
+        "summary": "IP 91.92.251.103 (BG, Ikt Solutions) thực hiện WEB_VULNERABILITY_SCAN chứ không phải PORT_SCAN. Probing các path web nhạy cảm: /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql. Không có dấu hiệu exploitation thành công, không có C2 indicators, không có port mở trên IP nguồn. VirusTotal phát hiện 2/91 malicious nhưng AbuseIPDB score 0. Đây là reconnaissance giai đoạn đầu (MITRE T1595.002).",
+        "risk_level": "medium",
+        "indicators": [
+          "91.92.251.103 - Web vulnerability scanner probing sensitive paths",
+          "Probed paths: /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql",
+          "MITRE T1595.002 - Vulnerability Scanning",
+          "VT detection: 2/91 (suspicious)",
+          "Source: Bulgaria, ISP: Ikt Solutions Ltd"
+        ],
+        "recommended_action": "block",
+        "confidence": 0.85,
+        "raw_data": {
+          "alert_original": {
+            "rf_class": "WebScan",
+            "ml_confidence": 0.85,
+            "paths": [
+              "/admin",
+              "/wp-admin",
+              "/phpmyadmin",
+              "/.env",
+              "/shell.php",
+              "/.git/config",
+              "/backup.sql"
+            ]
+          },
+          "abuseipdb": {
+            "score": 0,
+            "country": "BG",
+            "isp": "Ikt-Solutions"
+          },
+          "virustotal": {
+            "malicious": 2,
+            "suspicious": 1,
+            "detection_ratio": "2/91",
+            "tags": []
+          },
+          "scan_ports": {
+            "open_ports": []
+          },
+          "logs": {
+            "auth": "none",
+            "firewall": "none"
+          },
+          "mitre": {
+            "stage2a": "T1595.001",
+            "stage2b_disagrees": true,
+            "recommended": "T1595.002"
+          }
+        },
+        "subagent": "General-Investigator",
+        "iterations": 4,
+        "tokens": 11154
+      }
+    ],
+    "spawn_log": [
+      {
+        "investigator_type": "general",
+        "brief": "=== ALERT WEB-001: Web Vulnerability Scan Investigation ===\n\n[STAGE 1 - Raw Data]\n- Source IP: 91.92.251.103 → Destination: 192.168.1.10:80 (TCP)\n- Threat score: 0/100 (low), Risk: unknown\n- Not Tor, No failed auth, No PCAP signature\n- Log pattern: UNKNOWN, Anomalies: none detected\n- Traffic: 2400 bytes in, 1800 bytes out, 180 packets, 15s duration\n\n[STAGE 2A - ML Classifier]\n- Classified as: PORT_SCAN (Severity: MEDIUM)\n- MITRE: T1595.001 (Active Scanning)\n- Confidence: 55% (low)\n- Rationale: Alert describes web vulnerability scan probing sensitive paths\n\n[STAGE 2B - MITRE Mapper]\n- Does NOT agree with Stage 2A classification\n\n[ALERT GỐC]\n- rf_class: \"WebScan\"\n- ml_confidence: 0.85\n- Description: Probing /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql\n- These are typical web vulnerability scanning paths, NOT port scanning\n\n=== NHIỆM VỤ ===\n1. Xác định đây là PORT_SCAN thật sự hay WEB_VULNERABILITY_SCAN\n2. MITRE technique phù hợp nhất là gì? (T1595.002 - Vulnerability Scanning có thể phù hợp hơn T1595.001)\n3. Đánh giá mức độ nguy hiểm thực tế dựa trên evidence\n4. Đề xuất action: block, monitor, escalate, hay close_fp?"
+      }
+    ],
+    "iterations": 3,
+    "total_tokens": 10799,
+    "duration_sec": 61.43,
+    "error": null
+  },
+  "verdict": {
+    "overall_risk": "medium",
+    "final_action": "block",
+    "verdict_summary": "IP 91.92.251.103 (Bulgaria, Ikt Solutions) thực hiện web vulnerability scanning nhắm vào web server 192.168.1.10. Mặc dù Stage 2A (ML Classifier) phân loại là PORT_SCAN (T1595.001) với confidence thấp 55%, investigator đã xác nhận qua VirusTotal, AbuseIPDB, Shodan và phân tích traffic rằng đây thực chất là WEB_VULNERABILITY_SCAN (MITRE T1595.002). IP đã probe các path nhạy cảm như /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql — đây là hành vi reconnaissance điển hình của kẻ tấn công tìm kiếm lỗ hổng. Dù chưa phát hiện exploitation thành công, hành vi này cần bị chặn để ngăn chặn các bước tấn công tiếp theo. Investigator findings được ưu tiên hơn Stage 2A/2B vì có tool evidence thực tế.",
+    "key_findings": [
+      "IP 91.92.251.103 (BG, Ikt Solutions) thực hiện web vulnerability scanning — không phải port scan",
+      "Probed 7+ sensitive paths: /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql",
+      "VirusTotal phát hiện 2/91 malicious — IP có tiền sử đáng ngờ",
+      "Không có dấu hiệu exploitation thành công, không có C2, không có port mở trên IP nguồn",
+      "MITRE T1595.002 (Vulnerability Scanning) — phù hợp hơn T1595.001 (Active Scanning) do Stage 2A đề xuất"
+    ],
+    "mitre_technique": "T1595.002"
+  }
+}

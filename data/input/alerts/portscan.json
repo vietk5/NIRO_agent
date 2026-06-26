@@ -1,0 +1,14 @@
+{
+  "alert_id":      "SCAN-001",
+  "src_ip":        "45.33.32.156",
+  "dst_ip":        "192.168.1.10",
+  "dst_port":      0,
+  "protocol":      "TCP",
+  "rf_class":      "PortScan",
+  "ml_confidence": 0.88,
+  "bytes_in":      3200,
+  "bytes_out":     1800,
+  "packets":       480,
+  "duration":      10.0,
+  "description":   "Port scan across 10 ports from 45.33.32.156"
+}

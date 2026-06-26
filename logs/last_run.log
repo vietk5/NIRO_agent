@@ -1,0 +1,160 @@
+
+#################################################################
+  NIRO-PI -- Full Pipeline (Parallel + Subagent)
+#################################################################
+  Alert ID          : BF-001
+  Source IP         : 185.220.101.34
+  RF Class          : BruteForce  conf=96%
+  Desc              : SSH brute force từ Tor exit node — 12 failed attempts, 8 UFW blocks, p
+
+  [CONFIG] Loaded from: pipeline.yaml
+  [+] stage0_triage          mode=sequential   timeout=20s
+  [+] stage1_collection      mode=parallel     timeout=30s  agents=[[+]recon [+]log_collect [+]pcap]
+  [+] stage2_analysis        mode=parallel     timeout=60s  agents=[[+]ml_classify [+]mitre_map]
+  [+] stage2c_orchestrator   mode=sequential   timeout=120s
+  [+] stage3a_response       mode=sequential   timeout=300s
+  [+] stage3b_report         mode=sequential   timeout=60s
+
+
+=================================================================
+  STAGE 0 -- TRIAGE AGENT
+=================================================================
+       >> route_alert({"action": "escalate", "priority": 9, "justification": "SSH )
+  Action            : ESCALATE
+  Priority          : 9/10
+  Reason            : SSH brute force đang active từ Tor exit node (185.220.101.34) nhắm vào
+  Duration          : 8.7s
+
+=================================================================
+  STAGE 1 -- [PARALLEL]: recon + log_collector + pcap_analyzer
+=================================================================
+  [PCAP        ] Found: data\input\pcap\bruteforce_BF-001.pcap
+  [STAGE1      ] mode=parallel  agents=['recon', 'log_collect', 'pcap']
+  [LOG-COLLECT] Starting — searching auth/firewall/syslog
+  [PCAP        ] Starting — extracting flow features
+  [LOG-COLLECT] Done — failed_auth=12 fw_blocks=9 pattern=SSH_BRUTE_FORCE
+WARNING: No libpcap provider available ! pcap won't be used
+  [PCAP        ] Scapy read OK — 264 pkts, 34.7s
+  [PCAP        ] Done — sig=SSH_BRUTE_FORCE risk=0.84 anomalies=2
+       → tool_call: check_ip_reputation({"ip": "185.220.101.34"})
+         OK check_ip_reputation [1089ms]
+       → tool_call: check_virustotal({"ip": "185.220.101.34"})
+         OK check_virustotal [782ms]
+       → tool_call: scan_ports({"target_ip": "185.220.101.34", "ports": [22, 23, 25, 53, 80, 110, 135, 139, 143)
+         OK scan_ports [24501ms]
+       → tool_call: whois_lookup({"ip": "185.220.101.34"})
+         OK whois_lookup [1ms]
+       → tool_call: grab_banner({"target_ip": "185.220.101.34", "port": 80})
+         OK grab_banner [2211ms]
+       → tool_call: generate_risk_profile({"target_ip": "185.220.101.34", "threat_score": 100, "risk_level": "critical", ")
+         OK generate_risk_profile [0ms]
+  [STAGE1      ] Done in 45.0s (concurrently)
+
+  -- Stage 1 Summary --
+  IP Risk           : score=100 level=critical tor=True
+  Log Pattern       : failed_auth=12 fw_blocks=9 pattern=SSH_BRUTE_FORCE
+  PCAP Sig          : sig=SSH_BRUTE_FORCE risk=0.84 anomalies=2
+  Duration          : 45.0s
+
+=================================================================
+  STAGE 2 -- [PARALLEL]: ml_classifier + mitre_mapper
+=================================================================
+  [STAGE2-CFG  ] ml_classify.enabled=True  mitre_map.enabled=True
+  [STAGE2      ] mode=parallel  agents=['ml_classify', 'mitre_map']
+  [ML-CLASSIFY ] Starting — BruteForce conf=96%
+  [MITRE-MAP   ] Starting — building feature vector
+C:\Users\ADMIN\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeClassifier from version 1.7.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\ADMIN\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator RandomForestClassifier from version 1.7.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\ADMIN\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.7.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\ADMIN\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator ExtraTreeRegressor from version 1.7.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\ADMIN\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\base.py:463: InconsistentVersionWarning: Trying to unpickle estimator IsolationForest from version 1.7.2 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+  [MITRE-MAP   ] ⚠️  ANOMALY detected (score=-0.653)
+  [MITRE-MAP   ] Done — best=T1110.001 (Brute Force: Password Guessing) sim=0.982 known=True [sklearn:RandomForestClassifier] ⚠️ANOMALY=-0.65
+       → tool_call: classify_incident({"incident_type": "SSH_BRUTE_FORCE", "severity": "CRITICAL", "mitre_technique": )
+         OK classify_incident [0ms]
+  [ML-CLASSIFY ] Done — SSH_BRUTE_FORCE | CRITICAL | T1110.001 | conf=97%
+  [STAGE2      ] Done in 9.0s (concurrently)
+
+  -- Stage 2 Summary --
+  Incident Type     : SSH_BRUTE_FORCE
+  Severity (2A)     : CRITICAL
+  MITRE 2A (ML)     : T1110.001
+  MITRE 2B (best)   : T1110.001  (top=T1110.001  sim=0.9817)
+  2A vs 2B          : [AGREE]
+  Confidence        : 97%
+  Duration          : 9.0s
+
+=================================================================
+  STAGE 2C -- ORCHESTRATOR + INVESTIGATOR SUBAGENTS
+=================================================================
+       → tool_call: spawn_subagent({"investigator_type": "bruteforce", "brief": "=== ALERT BF-001: SSH BRUTE FORCE )
+
+  ┌─ [SPAWN] BRUTEFORCE-Investigator
+  │  Brief: === ALERT BF-001: SSH BRUTE FORCE TỪ TOR EXIT NODE ===
+
+[STAGE 1 - RAW DATA]
+- Source IP: 185.220.101.34 (Tor exit node)...
+    [BruteForce-Investigator] Starting investigation...
+       → tool_call: check_auth_log({"src_ip": "185.220.101.34"})
+         OK check_auth_log [0ms]
+       → tool_call: check_ip_reputation({"ip": "185.220.101.34"})
+         OK check_ip_reputation [1665ms]
+       → tool_call: check_virustotal({"ip": "185.220.101.34"})
+         OK check_virustotal [1514ms]
+       → tool_call: check_targeted_accounts({"src_ip": "185.220.101.34"})
+         OK check_targeted_accounts [0ms]
+       → tool_call: submit_findings({"summary": "X\u00e1c nh\u1eadn SSH brute force attack t\u1eeb Tor exit node 185)
+         OK submit_findings [0ms]
+    [BruteForce-Investigator] Done — risk=high conf=97% iter=6
+  └─ [BruteForce-Investigator] risk=high conf=97%
+         OK spawn_subagent [33843ms]
+       → tool_call: finalize_investigation({"overall_risk": "critical", "final_action": "block", "verdict_summary": "SSH BR)
+         OK finalize_investigation [0ms]
+
+  ══ ORCHESTRATOR VERDICT ══
+  Risk:    CRITICAL
+  Action:  BLOCK
+  MITRE:   T1110.001
+  Subagents spawned: 1
+  Duration: 53.9s
+
+  -- Subagent Summary --
+  Subagents spawned : 1
+    >> bruteforce
+  Overall Risk      : CRITICAL
+  Recommended       : BLOCK
+  MITRE (final)     : T1110.001
+  Duration          : 53.9s
+
+=================================================================
+  STAGE 3A -- RESPONSE AGENT (containment)
+=================================================================
+  [RESPONSE    ] Ticket created: INC-20260615-BF-001
+
+  [NOTIFY → #security-alerts] [CRITICAL] SSH_BRUTE_FORCE detected from 185.220.101.34 | Alert: BF-001 | MITRE: T1110.001
+
+  ======================================================
+  [!] APPROVAL REQUIRED
+      Action  : block_ip_address
+      IP      : 185.220.101.34
+      Reason  : SSH_BRUTE_FORCE — T1110.001
+  NIRO_WAITING_FOR_APPROVAL
+  ======================================================
+
+  #################################################################
+  PIPELINE PAUSED — WAITING FOR APPROVAL
+  #################################################################
+  Action  : block_ip_address
+  IP      : 185.220.101.34
+  Ticket  : INC-20260615-BF-001
+  NIRO_WAITING_FOR_APPROVAL alert=data/input/alerts/bruteforce.json

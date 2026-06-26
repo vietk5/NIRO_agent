@@ -1,0 +1,41 @@
+{
+  "timestamp": "20260611_185152",
+  "results": [
+    {
+      "alert_id": "DDOS-001",
+      "src_ip": "198.51.100.77",
+      "outcome": "MONITORED",
+      "severity": "MEDIUM",
+      "report_path": "reports\\198_51_100_77_20260611_162550_incident.md",
+      "duration": 42.078999999997905,
+      "error": null
+    },
+    {
+      "alert_id": "MY-ALERT-001",
+      "src_ip": "185.220.101.34",
+      "outcome": "BLOCKED",
+      "severity": "HIGH",
+      "report_path": "reports\\185_220_101_34_20260611_162413_incident.md",
+      "duration": 42.078999999997905,
+      "error": null
+    },
+    {
+      "alert_id": "EXFIL-001",
+      "src_ip": "192.168.1.55",
+      "outcome": "ESCALATED",
+      "severity": "HIGH",
+      "report_path": "reports\\192_168_1_55_20260611_162732_incident.md",
+      "duration": 42.094000000011874,
+      "error": null
+    },
+    {
+      "alert_id": "SCAN-001",
+      "src_ip": "45.33.32.156",
+      "outcome": "MONITORED",
+      "severity": "MEDIUM",
+      "report_path": "reports\\45_33_32_156_20260611_162502_incident.md",
+      "duration": 38.5,
+      "error": null
+    }
+  ]
+}

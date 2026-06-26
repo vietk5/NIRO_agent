@@ -1,0 +1,14 @@
+{
+  "alert_id":      "EXFIL-001",
+  "src_ip":        "192.168.1.55",
+  "dst_ip":        "104.21.45.200",
+  "dst_port":      443,
+  "protocol":      "TCP",
+  "rf_class":      "Exfiltration",
+  "ml_confidence": 0.79,
+  "bytes_in":      4200,
+  "bytes_out":     7977239,
+  "packets":       5340,
+  "duration":      300.0,
+  "description":   "Large outbound transfer 7.9MB to external IP — possible data exfiltration"
+}

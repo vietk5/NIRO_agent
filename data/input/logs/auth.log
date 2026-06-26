@@ -1,0 +1,39 @@
+# SSH Brute Force từ 185.220.101.34 (Tor exit node)
+Jun 11 08:12:01 server sshd[2100]: Failed password for root from 185.220.101.34 port 51001 ssh2
+Jun 11 08:12:03 server sshd[2100]: Failed password for root from 185.220.101.34 port 51002 ssh2
+Jun 11 08:12:05 server sshd[2100]: Invalid user admin from 185.220.101.34 port 51003
+Jun 11 08:12:07 server sshd[2100]: Failed password for ubuntu from 185.220.101.34 port 51004 ssh2
+Jun 11 08:12:09 server sshd[2100]: Invalid user pi from 185.220.101.34 port 51005
+Jun 11 08:12:11 server sshd[2100]: Failed password for root from 185.220.101.34 port 51006 ssh2
+Jun 11 08:12:13 server sshd[2100]: Failed password for user from 185.220.101.34 port 51007 ssh2
+Jun 11 08:12:15 server sshd[2100]: Invalid user oracle from 185.220.101.34 port 51008
+Jun 11 08:12:17 server sshd[2100]: Failed password for deploy from 185.220.101.34 port 51009 ssh2
+Jun 11 08:12:19 server sshd[2100]: Failed password for git from 185.220.101.34 port 51010 ssh2
+Jun 11 08:12:21 server sshd[2100]: Failed password for postgres from 185.220.101.34 port 51011 ssh2
+Jun 11 08:12:23 server sshd[2100]: Failed password for test from 185.220.101.34 port 51012 ssh2
+Jun 11 08:14:00 server sshd[2101]: Accepted publickey for deploy from 10.0.1.5 port 44321 ssh2
+Jun 11 08:14:01 server sshd[2101]: pam_unix(sshd:session): session opened for user deploy
+
+# Port Scan từ 45.33.32.156 (Shodan scanner)
+Jun 11 09:00:01 server sshd[3001]: Invalid user test from 45.33.32.156 port 60001
+Jun 11 09:00:02 server sshd[3001]: Invalid user admin from 45.33.32.156 port 60002
+Jun 11 09:00:03 server sshd[3001]: Invalid user root from 45.33.32.156 port 60003
+Jun 11 09:00:04 server sshd[3001]: Invalid user user from 45.33.32.156 port 60004
+Jun 11 09:00:05 server sshd[3001]: Connection closed by 45.33.32.156 port 60005 [preauth]
+Jun 11 09:00:06 server sshd[3001]: Connection closed by 45.33.32.156 port 60006 [preauth]
+Jun 11 09:00:07 server sshd[3001]: Connection closed by 45.33.32.156 port 60007 [preauth]
+
+# DNS Tunneling từ 203.0.113.45
+Jun 11 10:15:00 server named[4001]: client 203.0.113.45#54321: query: abc123def456.tunnel.evil.com IN TXT
+Jun 11 10:15:01 server named[4001]: client 203.0.113.45#54322: query: xyz789ghi012.tunnel.evil.com IN TXT
+Jun 11 10:15:02 server named[4001]: client 203.0.113.45#54323: query: payload001.c2channel.net IN A
+Jun 11 10:15:03 server named[4001]: client 203.0.113.45#54324: query: payload002.c2channel.net IN A
+Jun 11 10:15:04 server named[4001]: client 203.0.113.45#54325: query: data.exfil.badguy.io IN TXT
+Jun 11 10:15:05 server named[4001]: client 203.0.113.45#54326: query: chunk01.exfil.badguy.io IN TXT
+Jun 11 10:15:06 server named[4001]: client 203.0.113.45#54327: query: chunk02.exfil.badguy.io IN TXT
+Jun 11 10:15:07 server named[4001]: client 203.0.113.45#54328: query: chunk03.exfil.badguy.io IN TXT
+
+# Legitimate login (normal)
+Jun 11 11:00:00 server sshd[5001]: Accepted password for alice from 10.10.1.100 port 55000 ssh2
+Jun 11 11:00:01 server sshd[5001]: pam_unix(sshd:session): session opened for user alice
+Jun 11 11:30:00 server sshd[5002]: Accepted publickey for bob from 10.10.1.101 port 55100 ssh2

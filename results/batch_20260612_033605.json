@@ -1,0 +1,68 @@
+{
+  "timestamp": "20260612_033605",
+  "results": [
+    {
+      "alert_id": "BF-001",
+      "src_ip": "185.220.101.34",
+      "outcome": "BLOCKED",
+      "severity": "CRITICAL",
+      "report_path": "reports\\185_220_101_34_20260612_033349_incident.md",
+      "duration": 61.39099999999962,
+      "error": null
+    },
+    {
+      "alert_id": "DDOS-001",
+      "src_ip": "198.51.100.77",
+      "outcome": "BLOCKED",
+      "severity": "CRITICAL",
+      "report_path": "reports\\198_51_100_77_20260612_033348_incident.md",
+      "duration": 62.78099999999995,
+      "error": null
+    },
+    {
+      "alert_id": "DNS-001",
+      "src_ip": "203.0.113.45",
+      "outcome": "BLOCKED",
+      "severity": "HIGH",
+      "report_path": "reports\\203_0_113_45_20260612_033349_incident.md",
+      "duration": 62.79699999999957,
+      "error": null
+    },
+    {
+      "alert_id": "MY-ALERT-001",
+      "src_ip": "185.220.101.34",
+      "outcome": "BLOCKED",
+      "severity": "CRITICAL",
+      "report_path": "reports\\185_220_101_34_20260612_033447_incident.md",
+      "duration": 60.67199999999957,
+      "error": null
+    },
+    {
+      "alert_id": "EXFIL-001",
+      "src_ip": "192.168.1.55",
+      "outcome": "ESCALATED",
+      "severity": "HIGH",
+      "report_path": "reports\\192_168_1_55_20260612_033448_incident.md",
+      "duration": 58.85900000000038,
+      "error": null
+    },
+    {
+      "alert_id": "SCAN-001",
+      "src_ip": "45.33.32.156",
+      "outcome": "BLOCKED",
+      "severity": "HIGH",
+      "report_path": "reports\\45_33_32_156_20260612_033447_incident.md",
+      "duration": 60.48499999999967,
+      "error": null
+    },
+    {
+      "alert_id": "WEB-001",
+      "src_ip": "91.92.251.103",
+      "outcome": "MONITORED",
+      "severity": "LOW",
+      "report_path": "reports\\91_92_251_103_20260612_033548_incident.md",
+      "duration": 69.51599999999962,
+      "error": null
+    }
+  ]
+}

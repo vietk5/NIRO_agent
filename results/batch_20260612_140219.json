@@ -1,0 +1,32 @@
+{
+  "timestamp": "20260612_140219",
+  "results": [
+    {
+      "alert_id": "BF-001",
+      "src_ip": "185.220.101.34",
+      "outcome": "BLOCKED",
+      "severity": "HIGH",
+      "report_path": "reports\\185_220_101_34_20260612_140219_incident.md",
+      "duration": 167.1790400999962,
+      "error": null
+    },
+    {
+      "alert_id": "DNS-001",
+      "src_ip": "203.0.113.45",
+      "outcome": "MONITORED",
+      "severity": "LOW",
+      "report_path": "reports\\203_0_113_45_20260612_140145_incident.md",
+      "duration": 133.9760105999958,
+      "error": null
+    },
+    {
+      "alert_id": "WEB-001",
+      "src_ip": "91.92.251.103",
+      "outcome": "MONITORED",
+      "severity": "MEDIUM",
+      "report_path": "reports\\91_92_251_103_20260612_140217_incident.md",
+      "duration": 166.10479900000064,
+      "error": null
+    }
+  ]
+}

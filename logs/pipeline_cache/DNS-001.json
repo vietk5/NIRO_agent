@@ -1,0 +1,507 @@
+{
+  "alert": {
+    "alert_id": "DNS-001",
+    "src_ip": "203.0.113.45",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 53,
+    "protocol": "UDP",
+    "rf_class": "DNS Tunneling",
+    "ml_confidence": 0.92,
+    "bytes_in": 4800,
+    "bytes_out": 3200,
+    "packets": 420,
+    "duration": 10.0,
+    "description": "DNS tunneling — 8+ queries to tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru"
+  },
+  "alert_path": "data\\input\\alerts\\.tmp\\alert_001_DNS-001.json",
+  "save": true,
+  "verbose": true,
+  "routing": {
+    "action": "escalate",
+    "priority": 9,
+    "justification": "DNS Tunneling confirmed với ML confidence 0.92. Source IP public (203.0.113.45) đang gửi lượng lớn DNS queries đến các domain độc hại rõ ràng (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) qua internal DNS server. Số lượng packets (420) và data volume (8KB) trong 10s là bất thường, khớp với pattern DNS tunneling. Cần phản ứng ngay để chặn C2 communication và ngăn chặn data exfiltration.",
+    "key_indicators": [
+      "ML confidence 0.92",
+      "DNS queries đến domain độc hại rõ ràng",
+      "Source IP public (không phải RFC-1918)",
+      "420 packets / 10s - throughput bất thường",
+      "Data imbalance (4800 in / 3200 out) qua DNS"
+    ]
+  },
+  "action": "escalate",
+  "priority": 9,
+  "stage1": {
+    "recon": {
+      "risk_profile": {
+        "target_ip": "203.0.113.45",
+        "threat_score": 0,
+        "risk_level": "low",
+        "isTor": false,
+        "country": "Unknown (Reserved/Test Range)",
+        "isp": "Unknown (IANA Reserved - TEST-NET-3)",
+        "open_ports": [],
+        "recommended_action": "IP 203.0.113.45 thuộc dải TEST-NET-3 (203.0.113.0/24) được IANA dành riêng cho mục đích documentation/test, không được sử dụng trên Internet thực. Các threat intel databases (AbuseIPDB, VirusTotal) không ghi nhận hoạt động độc hại. Tuy nhiên, alert DNS Tunneling với ml_confidence 0.92 cho thấy đây có thể là IP giả mạo/spoofed trong log nội bộ. Khuyến nghị: (1) Kiểm tra lại nguồn log để xác nhận IP thực, (2) Nếu là IP thật, cần điều tra sâu hơn về các domain đích (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru), (3) Chặn các domain đáng ngờ tại DNS layer.",
+        "summary": "IP 203.0.113.45 thuộc dải TEST-NET-3 (reserved cho documentation). AbuseIPDB: score 0, không Tor. VirusTotal: 0/91 malicious, CLEAN. Không có cổng mở. WHOIS không khả dụng. Dù các threat intel không ghi nhận nguy hiểm, alert DNS Tunneling với confidence 0.92 và 8+ queries đến các domain độc hại (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) cho thấy đây có thể là IP giả mạo hoặc cần điều tra thêm. Threat score tổng hợp: 0/100."
+      },
+      "tool_log": [
+        {
+          "iteration": 1,
+          "tool": "check_ip_reputation",
+          "args": {
+            "ip": "203.0.113.45"
+          },
+          "result": {
+            "ip": "203.0.113.45",
+            "abuseScore": 0,
+            "isTor": false,
+            "country": null,
+            "isp": null,
+            "totalReports": 6,
+            "lastReportedAt": "2026-05-25T13:39:01+00:00",
+            "usageType": "Reserved"
+          },
+          "duration_ms": 887
+        },
+        {
+          "iteration": 1,
+          "tool": "check_virustotal",
+          "args": {
+            "ip": "203.0.113.45"
+          },
+          "result": {
+            "ip": "203.0.113.45",
+            "malicious": 0,
+            "suspicious": 0,
+            "harmless": 55,
+            "undetected": 36,
+            "detection_ratio": "0/91",
+            "reputation": 0,
+            "country": "",
+            "as_owner": "",
+            "tags": [
+              "private"
+            ],
+            "verdict": "CLEAN"
+          },
+          "duration_ms": 906
+        },
+        {
+          "iteration": 2,
+          "tool": "scan_ports",
+          "args": {
+            "target_ip": "203.0.113.45",
+            "ports": [
+              21,
+              22,
+              23,
+              25,
+              53,
+              80,
+              110,
+              143,
+              443,
+              445,
+              993,
+              995,
+              1433,
+              1521,
+              2049,
+              3306,
+              3389,
+              5432,
+              5900,
+              6379,
+              8080,
+              8443,
+              9000,
+              27017
+            ]
+          },
+          "result": {
+            "target": "203.0.113.45",
+            "open_ports": [],
+            "scanned": 24
+          },
+          "duration_ms": 24185
+        },
+        {
+          "iteration": 2,
+          "tool": "whois_lookup",
+          "args": {
+            "ip": "203.0.113.45"
+          },
+          "result": {
+            "note": "whois not installed",
+            "ip": "203.0.113.45"
+          },
+          "duration_ms": 1
+        },
+        {
+          "iteration": 3,
+          "tool": "resolve_dns",
+          "args": {
+            "hostname": "203.0.113.45"
+          },
+          "result": {
+            "hostname": "203.0.113.45",
+            "ip": "203.0.113.45"
+          },
+          "duration_ms": 0
+        },
+        {
+          "iteration": 4,
+          "tool": "generate_risk_profile",
+          "args": {
+            "target_ip": "203.0.113.45",
+            "threat_score": 0,
+            "risk_level": "low",
+            "isTor": false,
+            "country": "Unknown (Reserved/Test Range)",
+            "isp": "Unknown (IANA Reserved - TEST-NET-3)",
+            "open_ports": [],
+            "recommended_action": "IP 203.0.113.45 thuộc dải TEST-NET-3 (203.0.113.0/24) được IANA dành riêng cho mục đích documentation/test, không được sử dụng trên Internet thực. Các threat intel databases (AbuseIPDB, VirusTotal) không ghi nhận hoạt động độc hại. Tuy nhiên, alert DNS Tunneling với ml_confidence 0.92 cho thấy đây có thể là IP giả mạo/spoofed trong log nội bộ. Khuyến nghị: (1) Kiểm tra lại nguồn log để xác nhận IP thực, (2) Nếu là IP thật, cần điều tra sâu hơn về các domain đích (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru), (3) Chặn các domain đáng ngờ tại DNS layer.",
+            "summary": "IP 203.0.113.45 thuộc dải TEST-NET-3 (reserved cho documentation). AbuseIPDB: score 0, không Tor. VirusTotal: 0/91 malicious, CLEAN. Không có cổng mở. WHOIS không khả dụng. Dù các threat intel không ghi nhận nguy hiểm, alert DNS Tunneling với confidence 0.92 và 8+ queries đến các domain độc hại (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) cho thấy đây có thể là IP giả mạo hoặc cần điều tra thêm. Threat score tổng hợp: 0/100."
+          },
+          "result": {
+            "target_ip": "203.0.113.45",
+            "threat_score": 0,
+            "risk_level": "low",
+            "isTor": false,
+            "country": "Unknown (Reserved/Test Range)",
+            "isp": "Unknown (IANA Reserved - TEST-NET-3)",
+            "open_ports": [],
+            "recommended_action": "IP 203.0.113.45 thuộc dải TEST-NET-3 (203.0.113.0/24) được IANA dành riêng cho mục đích documentation/test, không được sử dụng trên Internet thực. Các threat intel databases (AbuseIPDB, VirusTotal) không ghi nhận hoạt động độc hại. Tuy nhiên, alert DNS Tunneling với ml_confidence 0.92 cho thấy đây có thể là IP giả mạo/spoofed trong log nội bộ. Khuyến nghị: (1) Kiểm tra lại nguồn log để xác nhận IP thực, (2) Nếu là IP thật, cần điều tra sâu hơn về các domain đích (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru), (3) Chặn các domain đáng ngờ tại DNS layer.",
+            "summary": "IP 203.0.113.45 thuộc dải TEST-NET-3 (reserved cho documentation). AbuseIPDB: score 0, không Tor. VirusTotal: 0/91 malicious, CLEAN. Không có cổng mở. WHOIS không khả dụng. Dù các threat intel không ghi nhận nguy hiểm, alert DNS Tunneling với confidence 0.92 và 8+ queries đến các domain độc hại (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) cho thấy đây có thể là IP giả mạo hoặc cần điều tra thêm. Threat score tổng hợp: 0/100."
+          },
+          "duration_ms": 0
+        }
+      ],
+      "error": null
+    },
+    "log_collect": {
+      "auth_log_events": [
+        "# DNS Tunneling tá»« 203.0.113.45",
+        "Jun 11 10:15:00 server named[4001]: client 203.0.113.45#54321: query: abc123def456.tunnel.evil.com IN TXT",
+        "Jun 11 10:15:01 server named[4001]: client 203.0.113.45#54322: query: xyz789ghi012.tunnel.evil.com IN TXT",
+        "Jun 11 10:15:02 server named[4001]: client 203.0.113.45#54323: query: payload001.c2channel.net IN A",
+        "Jun 11 10:15:03 server named[4001]: client 203.0.113.45#54324: query: payload002.c2channel.net IN A",
+        "Jun 11 10:15:04 server named[4001]: client 203.0.113.45#54325: query: data.exfil.badguy.io IN TXT",
+        "Jun 11 10:15:05 server named[4001]: client 203.0.113.45#54326: query: chunk01.exfil.badguy.io IN TXT",
+        "Jun 11 10:15:06 server named[4001]: client 203.0.113.45#54327: query: chunk02.exfil.badguy.io IN TXT",
+        "Jun 11 10:15:07 server named[4001]: client 203.0.113.45#54328: query: chunk03.exfil.badguy.io IN TXT"
+      ],
+      "firewall_events": [
+        "Jun 11 10:15:00 server kernel: [UFW BLOCK] IN=eth0 SRC=203.0.113.45 DST=192.168.1.10 PROTO=UDP DPT=53 SPT=54321",
+        "Jun 11 10:15:01 server kernel: [UFW BLOCK] IN=eth0 SRC=203.0.113.45 DST=192.168.1.10 PROTO=UDP DPT=53 SPT=54322"
+      ],
+      "syslog_events": [],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T16:25:50.697293+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"AUTO-004\", \"src_ip\": \"203.0.113.45\", \"rf_class\": \"DNSTunnel\", \"prev_hash\": \"d3930e4380ea6db4aa88aa933199072faa5141886d6b28b78058c1c5b8e59e97\", \"hash\": \"0c2300848b91ffa8be9952aef94bfc9d38171523cdffeaa91b26c3a89dd57a6d\"}",
+        "{\"ts\": \"2026-06-11T16:25:58.411745+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"203.0.113.45\", \"prev_hash\": \"2fd209ac4a986db1d58643d874f14909286ce16133514a1e36ff8ea48d329c2f\", \"hash\": \"fc3640c5e6c4407be0ae103f0c8f062516fb58db3af6d837b846f05d31a17c7a\"}",
+        "{\"ts\": \"2026-06-12T03:32:54.560359+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"DNS-001\", \"src_ip\": \"203.0.113.45\", \"rf_class\": \"DNS Tunneling\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"ff60e01dd00e5d7fc7e825daf9c4e19c1a33e718b7401c7d32ff1ff4f3c4e3a8\"}",
+        "{\"ts\": \"2026-06-12T03:33:05.339427+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"203.0.113.45\", \"prev_hash\": \"c5124e3f8306a430444e5ed8b2498e6480edbd9beff4c395c0d59035ad7f0d72\", \"hash\": \"1fc6824d30d0bae96a21027a0731fc6a71437df45265f0a2175486751e973509\"}",
+        "{\"ts\": \"2026-06-12T13:55:01.724782+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"203.0.113.45\", \"prev_hash\": \"21f701134f76873be951e396b693e89354d9a9543be3f381a66b70482aea9afa\", \"hash\": \"83b4b893b767152afc49b0a35a631340e4406fe13409efeec079897c4c5dac52\"}",
+        "{\"ts\": \"2026-06-12T13:56:07.193481+00:00\", \"event\": \"AGENT_START\", \"agent\": \"orchestrator\", \"info\": \"203.0.113.45\", \"prev_hash\": \"e7fbc11f4065baedce868d76a01def211d170b6b1ebddc2d8257f02e6bbd5639\", \"hash\": \"592b03e445bb59b8a0af493da6f3abaa910ca4999eaf162ea88238fb494b938d\"}",
+        "{\"ts\": \"2026-06-12T13:57:05.856889+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"203.0.113.45\", \"prev_hash\": \"0ca4733043482a3bbb9175f97d8b9e3f525c473f61ac54fecc0def7c3915666a\", \"hash\": \"a6d8fdffe2dcef6100d5229c9bf414a9253f8508ba5a7ba2bf8b1005e5cae931\"}",
+        "{\"ts\": \"2026-06-12T13:58:22.799496+00:00\", \"event\": \"AGENT_START\", \"agent\": \"orchestrator\", \"info\": \"203.0.113.45\", \"prev_hash\": \"37c99dc951e4e40dc19dd1569b09ddfbb14b2dbda349a243fa948eeec1850874\", \"hash\": \"0874a49be3982d19951a6f90ac4e96ea94bb61cf810b82dc535ad54b9deef080\"}",
+        "{\"ts\": \"2026-06-12T13:59:42.130758+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"203.0.113.45\", \"prev_hash\": \"b0568323ed1f51fa7ce9573b655aa3282166e038754bff182bc1f8600d840d72\", \"hash\": \"346ac0af41560b29059867b6ec7b1c6ff64793e37d5f135c1f72e882774ef4c5\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 0,
+        "blocked_connections": 2,
+        "targeted_ports": [
+          53
+        ],
+        "attack_pattern": "UNKNOWN",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "pcap": {
+      "flow_features": {
+        "packet_count": 420,
+        "total_bytes": 8000,
+        "duration_sec": 10.0,
+        "packets_per_sec": 42.0,
+        "bytes_per_packet": 19.0,
+        "bytes_per_sec": 800.0,
+        "dst_port": 53,
+        "bytes_in": 4800,
+        "bytes_out": 3200,
+        "payload_entropy": 4.5,
+        "syn_count": 0,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [],
+      "flow_signature_match": "UNKNOWN",
+      "risk_score": 0.2,
+      "error": null
+    }
+  },
+  "rp": {
+    "target_ip": "203.0.113.45",
+    "threat_score": 0,
+    "risk_level": "low",
+    "isTor": false,
+    "country": "Unknown (Reserved/Test Range)",
+    "isp": "Unknown (IANA Reserved - TEST-NET-3)",
+    "open_ports": [],
+    "recommended_action": "IP 203.0.113.45 thuộc dải TEST-NET-3 (203.0.113.0/24) được IANA dành riêng cho mục đích documentation/test, không được sử dụng trên Internet thực. Các threat intel databases (AbuseIPDB, VirusTotal) không ghi nhận hoạt động độc hại. Tuy nhiên, alert DNS Tunneling với ml_confidence 0.92 cho thấy đây có thể là IP giả mạo/spoofed trong log nội bộ. Khuyến nghị: (1) Kiểm tra lại nguồn log để xác nhận IP thực, (2) Nếu là IP thật, cần điều tra sâu hơn về các domain đích (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru), (3) Chặn các domain đáng ngờ tại DNS layer.",
+    "summary": "IP 203.0.113.45 thuộc dải TEST-NET-3 (reserved cho documentation). AbuseIPDB: score 0, không Tor. VirusTotal: 0/91 malicious, CLEAN. Không có cổng mở. WHOIS không khả dụng. Dù các threat intel không ghi nhận nguy hiểm, alert DNS Tunneling với confidence 0.92 và 8+ queries đến các domain độc hại (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) cho thấy đây có thể là IP giả mạo hoặc cần điều tra thêm. Threat score tổng hợp: 0/100."
+  },
+  "ls": {
+    "failed_auth_count": 0,
+    "blocked_connections": 2,
+    "targeted_ports": [
+      53
+    ],
+    "attack_pattern": "UNKNOWN",
+    "first_seen": "unknown",
+    "last_seen": "unknown",
+    "log_sources_checked": 4
+  },
+  "pcap": {
+    "flow_features": {
+      "packet_count": 420,
+      "total_bytes": 8000,
+      "duration_sec": 10.0,
+      "packets_per_sec": 42.0,
+      "bytes_per_packet": 19.0,
+      "bytes_per_sec": 800.0,
+      "dst_port": 53,
+      "bytes_in": 4800,
+      "bytes_out": 3200,
+      "payload_entropy": 4.5,
+      "syn_count": 0,
+      "source": "derived_from_alert"
+    },
+    "anomaly_indicators": [],
+    "flow_signature_match": "UNKNOWN",
+    "risk_score": 0.2,
+    "error": null
+  },
+  "stage2": {
+    "ml": {
+      "classification": {
+        "incident_type": "MALWARE_C2",
+        "severity": "HIGH",
+        "mitre_technique": "T1071.001",
+        "mitre_tactic": "Command and Control",
+        "confidence": 0.85,
+        "is_true_positive": true,
+        "rationale": "ML model phát hiện DNS tunneling với confidence 0.92. Các domain đáng ngờ (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) chỉ rõ hoạt động C2 qua DNS. Bytes/packet rất thấp (19 bytes) và 420 packets trong 10s phù hợp với DNS tunneling behavior. Dù AbuseIPDB không ghi nhận threat score, evidence từ alert gốc và PCAP (bpp thấp bất thường) đủ mạnh để kết luận MALWARE_C2 với kỹ thuật DNS tunneling (T1071.001).",
+        "secondary_techniques": [
+          "T1572",
+          "T1041"
+        ]
+      },
+      "containment_steps": [
+        "Block C2 domain/IP tại DNS và firewall",
+        "Cô lập host nghi ngờ",
+        "Phân tích memory dump để tìm malware",
+        "Review tất cả outbound HTTPS connections"
+      ],
+      "mitre_details": {
+        "name": "Application Layer Protocol: Web Protocols",
+        "tactic": "Command and Control",
+        "containment": [
+          "Block C2 domain/IP tại DNS và firewall",
+          "Cô lập host nghi ngờ",
+          "Phân tích memory dump để tìm malware",
+          "Review tất cả outbound HTTPS connections"
+        ]
+      },
+      "secondary_techniques": [
+        "T1572",
+        "T1041"
+      ],
+      "error": null
+    },
+    "mitre": {
+      "query_vector": [
+        0.0,
+        0.0,
+        0.2794,
+        0.605,
+        0.0127,
+        0.1107,
+        0.5625,
+        0.0,
+        0.0,
+        0.92
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.5954,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.2375,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.1606,
+          "description": "Learned centroid from training data (T1498)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.004,
+          "description": "Learned centroid from training data (T1110.001)"
+        },
+        {
+          "technique_id": "T1595.001",
+          "name": "Active Scanning: Scanning IP Blocks",
+          "tactic": "Reconnaissance",
+          "similarity": 0.0025,
+          "description": "Learned centroid from training data (T1595.001)"
+        }
+      ],
+      "best_technique": "T1071.001",
+      "best_technique_name": "Application Layer Protocol: Web",
+      "best_tactic": "Command and Control",
+      "best_similarity": 0.5954,
+      "is_known_technique": false,
+      "is_anomaly": false,
+      "anomaly_score": -0.5996,
+      "model_used": "sklearn:RandomForestClassifier",
+      "technique_risk_score": 0.476,
+      "error": null
+    }
+  },
+  "clf": {
+    "incident_type": "MALWARE_C2",
+    "severity": "HIGH",
+    "mitre_technique": "T1071.001",
+    "mitre_tactic": "Command and Control",
+    "confidence": 0.85,
+    "is_true_positive": true,
+    "rationale": "ML model phát hiện DNS tunneling với confidence 0.92. Các domain đáng ngờ (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) chỉ rõ hoạt động C2 qua DNS. Bytes/packet rất thấp (19 bytes) và 420 packets trong 10s phù hợp với DNS tunneling behavior. Dù AbuseIPDB không ghi nhận threat score, evidence từ alert gốc và PCAP (bpp thấp bất thường) đủ mạnh để kết luận MALWARE_C2 với kỹ thuật DNS tunneling (T1071.001).",
+    "secondary_techniques": [
+      "T1572",
+      "T1041"
+    ]
+  },
+  "containment": [
+    "Block C2 domain/IP tại DNS và firewall",
+    "Cô lập host nghi ngờ",
+    "Phân tích memory dump để tìm malware",
+    "Review tất cả outbound HTTPS connections"
+  ],
+  "techniques": [],
+  "investigation": {
+    "verdict": {
+      "overall_risk": "low",
+      "final_action": "close_fp",
+      "verdict_summary": "Alert DNS-001 được ML classifier phân loại là MALWARE_C2 (T1071.001) với confidence 0.92 dựa trên DNS query pattern khả nghi (subdomain ngẫu nhiên dài + TXT record queries tới tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru). Tuy nhiên, investigator phát hiện IP nguồn 203.0.113.45 thuộc dải RESERVED (RFC 5737) — dành cho documentation/testing, không phải IP thật trên Internet. VirusTotal: 0/91 malicious, AbuseIPDB: score 0. Stage 1 cũng ghi nhận threat score 0/100. Đây là false positive: traffic có pattern DNS tunneling nhưng đến từ IP không thật, nhiều khả năng là simulation/lab traffic hoặc PCAP replay. UFW đã block thành công các gói tin. Không có evidence về C2 infrastructure thực sự.",
+      "key_findings": [
+        "IP 203.0.113.45 thuộc dải RESERVED (RFC 5737) — không phải IP thật trên Internet",
+        "VirusTotal: 0/91 malicious, AbuseIPDB: score 0 — không có tiền sử độc hại",
+        "DNS query pattern (subdomain ngẫu nhiên dài + TXT record) khớp với DNS tunneling nhưng không thể xác nhận C2 thật",
+        "Stage 1 threat score = 0/100 — không có anomaly nào được phát hiện",
+        "Stage 2A (ML Classifier) và Stage 2B (MITRE Mapper) mâu thuẫn — investigator ưu tiên evidence từ tool"
+      ],
+      "mitre_technique": "T1071.001"
+    },
+    "subagent_findings": [
+      {
+        "summary": "IP 203.0.113.45 thuộc dải RESERVED (RFC 5737) — không phải IP thật. VirusTotal: 0/91 malicious, AbuseIPDB: score 0. Dù DNS query pattern (subdomain ngẫu nhiên dài + TXT record) khớp với DNS tunneling, nhưng IP nguồn không tồn tại thực tế nên không thể xác nhận đây là C2 thật. Có khả năng là simulation traffic, lab environment, hoặc source IP bị spoof. UFW đã block thành công các gói tin.",
+        "risk_level": "low",
+        "indicators": [
+          "IP 203.0.113.45 thuộc dải reserved (RFC 5737)",
+          "DNS query pattern: subdomain ngẫu nhiên dài + TXT record — dấu hiệu DNS tunneling",
+          "Domain đáng ngờ: tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru",
+          "UFW đã block các gói tin UDP port 53",
+          "ML confidence 0.92 nhưng IP nguồn không thật",
+          "Stage 2A (MALWARE_C2) và Stage 2B (MITRE Mapper) không đồng thuận"
+        ],
+        "recommended_action": "monitor",
+        "confidence": 0.35,
+        "raw_data": {
+          "ip_reputation": {
+            "abuseScore": 0,
+            "totalReports": 6,
+            "usageType": "Reserved"
+          },
+          "virustotal": {
+            "malicious": 0,
+            "suspicious": 0,
+            "detection_ratio": "0/91",
+            "tags": [
+              "private"
+            ],
+            "verdict": "CLEAN"
+          },
+          "combined_logs": {
+            "auth_found": 9,
+            "firewall_found": 2,
+            "firewall_action": "BLOCK"
+          },
+          "ports": {
+            "open": [],
+            "scanned": [
+              53,
+              80,
+              443,
+              8080,
+              4444,
+              1337,
+              22,
+              3389
+            ]
+          },
+          "alert_details": {
+            "packets": 420,
+            "bytes_in": 4800,
+            "bytes_out": 3200,
+            "duration": "10s",
+            "domains": [
+              "tunnel.evil.com",
+              "c2channel.net",
+              "exfil.badguy.io",
+              "malware-host.ru"
+            ]
+          }
+        },
+        "subagent": "General-Investigator",
+        "iterations": 4,
+        "tokens": 11928
+      }
+    ],
+    "spawn_log": [
+      {
+        "investigator_type": "general",
+        "brief": "=== ALERT DNS TUNNELING / C2 ===\nAlert ID: DNS-001\nSource IP: 203.0.113.45 → Destination IP: 192.168.1.10:53 (UDP)\nML Confidence: 0.92 — DNS Tunneling\n\n=== Stage 1 (Raw Data) ===\n- Threat score: 0/100 (low)\n- Risk level: low\n- Is Tor: False\n- Log pattern: UNKNOWN\n- Failed auth: 0\n- PCAP sig: UNKNOWN\n- Anomalies: []\n\n=== Stage 2A (ML Classifier) ===\n- Incident type: MALWARE_C2\n- Severity: HIGH\n- MITRE: T1071.001 (Web Protocols - DNS)\n- Confidence: 85%\n- Rationale: ML phát hiện DNS tunneling confidence 0.92. Domain đáng ngờ: tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru\n\n=== Stage 2B (MITRE Mapper) ===\n- Mâu thuẫn với Stage 2A (không đồng thuận)\n\n=== Alert gốc ===\n- 420 packets, 4800 bytes in, 3200 bytes out, 10s duration\n- 8+ queries to: tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru\n- rf_class: DNS Tunneling\n\n=== Yêu cầu ===\n1. Xác nhận hoặc bác bỏ phân loại MALWARE_C2 / T1071.001\n2. Điều tra IP 203.0.113.45 và các domain đáng ngờ\n3. Kiểm tra evidence từ tool: DNS query patterns, domain reputation, traffic analysis\n4. Đưa ra kết luận: đây có thực sự là C2/DNS tunneling hay false positive?"
+      }
+    ],
+    "iterations": 3,
+    "total_tokens": 10861,
+    "duration_sec": 58.93,
+    "error": null
+  },
+  "verdict": {
+    "overall_risk": "low",
+    "final_action": "close_fp",
+    "verdict_summary": "Alert DNS-001 được ML classifier phân loại là MALWARE_C2 (T1071.001) với confidence 0.92 dựa trên DNS query pattern khả nghi (subdomain ngẫu nhiên dài + TXT record queries tới tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru). Tuy nhiên, investigator phát hiện IP nguồn 203.0.113.45 thuộc dải RESERVED (RFC 5737) — dành cho documentation/testing, không phải IP thật trên Internet. VirusTotal: 0/91 malicious, AbuseIPDB: score 0. Stage 1 cũng ghi nhận threat score 0/100. Đây là false positive: traffic có pattern DNS tunneling nhưng đến từ IP không thật, nhiều khả năng là simulation/lab traffic hoặc PCAP replay. UFW đã block thành công các gói tin. Không có evidence về C2 infrastructure thực sự.",
+    "key_findings": [
+      "IP 203.0.113.45 thuộc dải RESERVED (RFC 5737) — không phải IP thật trên Internet",
+      "VirusTotal: 0/91 malicious, AbuseIPDB: score 0 — không có tiền sử độc hại",
+      "DNS query pattern (subdomain ngẫu nhiên dài + TXT record) khớp với DNS tunneling nhưng không thể xác nhận C2 thật",
+      "Stage 1 threat score = 0/100 — không có anomaly nào được phát hiện",
+      "Stage 2A (ML Classifier) và Stage 2B (MITRE Mapper) mâu thuẫn — investigator ưu tiên evidence từ tool"
+    ],
+    "mitre_technique": "T1071.001"
+  }
+}

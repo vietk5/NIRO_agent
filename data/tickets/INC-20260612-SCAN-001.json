@@ -1,0 +1,9 @@
+{
+  "ticket_id": "INC-20260612-SCAN-001",
+  "alert_id": "SCAN-001",
+  "severity": "HIGH",
+  "summary": "PORT_SCAN from 45.33.32.156 | MITRE: T1595.001",
+  "assigned_to": "SOC-TEAM",
+  "status": "OPEN",
+  "created_at": "2026-06-12T03:34:47.433764+00:00"
+}

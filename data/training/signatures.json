@@ -1,0 +1,110 @@
+{
+  "T1041": {
+    "name": "Exfiltration Over C2 Channel",
+    "tactic": "Exfiltration",
+    "vector": [
+      1.0,
+      0.0,
+      0.0,
+      0.1278,
+      0.0,
+      0.0,
+      0.41,
+      0.0,
+      0.4906,
+      1.0
+    ],
+    "description": "Learned centroid from training data (T1041)",
+    "trained": true
+  },
+  "T1071.001": {
+    "name": "Application Layer Protocol: Web",
+    "tactic": "Command and Control",
+    "vector": [
+      0.9738,
+      0.6807,
+      0.1409,
+      0.9097,
+      0.0,
+      0.0,
+      0.4496,
+      0.0,
+      0.6103,
+      1.0
+    ],
+    "description": "Learned centroid from training data (T1071.001)",
+    "trained": true
+  },
+  "BENIGN": {
+    "name": "False Positive / Benign Traffic",
+    "tactic": "N/A",
+    "vector": [
+      0.3297,
+      0.0834,
+      0.0216,
+      0.5871,
+      0.0,
+      0.0,
+      0.3348,
+      0.0,
+      0.2096,
+      1.0
+    ],
+    "description": "Learned centroid from training data (BENIGN)",
+    "trained": true
+  },
+  "T1498": {
+    "name": "Network Denial of Service",
+    "tactic": "Impact",
+    "vector": [
+      0.9925,
+      0.85,
+      0.2022,
+      0.4235,
+      0.0,
+      0.0,
+      0.7435,
+      0.0,
+      0.4945,
+      1.0
+    ],
+    "description": "Learned centroid from training data (T1498)",
+    "trained": true
+  },
+  "T1595.001": {
+    "name": "Active Scanning: Scanning IP Blocks",
+    "tactic": "Reconnaissance",
+    "vector": [
+      0.9984,
+      0.6975,
+      0.1577,
+      0.995,
+      0.0,
+      0.0,
+      0.4016,
+      0.0,
+      0.6302,
+      1.0
+    ],
+    "description": "Learned centroid from training data (T1595.001)",
+    "trained": true
+  },
+  "T1110.001": {
+    "name": "Brute Force: Password Guessing",
+    "tactic": "Credential Access",
+    "vector": [
+      0.9984,
+      0.2768,
+      0.0773,
+      0.1928,
+      0.0,
+      0.0,
+      0.4728,
+      0.0,
+      0.4998,
+      1.0
+    ],
+    "description": "Learned centroid from training data (T1110.001)",
+    "trained": true
+  }
+}

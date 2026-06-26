@@ -1,0 +1,11 @@
+NIRO — IsolationForest Training Report
+Dataset: data\training\labeled.jsonl  |  Train vectors: 8057
+contamination=0.1  n_estimators=200
+=======================================================
+  [ANOMALY] Normal HTTP backup        score=-0.709
+  [ANOMALY] SSH BruteForce            score=-0.675
+  [ANOMALY] BruteForce via Tor        score=-0.709
+  [ANOMALY] Port Scan                 score=-0.654
+  [ANOMALY] DDoS SYN flood            score=-0.686
+  [ANOMALY] Data Exfiltration         score=-0.663
+  [ANOMALY] Novel/Unknown             score=-0.678

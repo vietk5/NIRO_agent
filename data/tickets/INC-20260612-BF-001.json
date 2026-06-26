@@ -1,0 +1,9 @@
+{
+  "ticket_id": "INC-20260612-BF-001",
+  "alert_id": "BF-001",
+  "severity": "HIGH",
+  "summary": "SSH_BRUTE_FORCE from 185.220.101.34 | MITRE: T1110.001",
+  "assigned_to": "SOC-TEAM",
+  "status": "OPEN",
+  "created_at": "2026-06-12T14:02:19.032194+00:00"
+}

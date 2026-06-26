@@ -1,0 +1,14 @@
+{
+  "alert_id":      "DNS-001",
+  "src_ip":        "203.0.113.45",
+  "dst_ip":        "192.168.1.10",
+  "dst_port":      53,
+  "protocol":      "UDP",
+  "rf_class":      "DNS Tunneling",
+  "ml_confidence": 0.92,
+  "bytes_in":      4800,
+  "bytes_out":     3200,
+  "packets":       420,
+  "duration":      10.0,
+  "description":   "DNS tunneling — 8+ queries to tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru"
+}

@@ -1,0 +1,9 @@
+{
+  "ticket_id": "INC-20260612-DNS-001",
+  "alert_id": "DNS-001",
+  "severity": "HIGH",
+  "summary": "MALWARE_C2 from 203.0.113.45 | MITRE: T1071.001",
+  "assigned_to": "SOC-TEAM",
+  "status": "OPEN",
+  "created_at": "2026-06-12T13:59:37.529653+00:00"
+}

@@ -1,0 +1,9 @@
+{
+  "ticket_id": "INC-20260612-MY-ALERT-001",
+  "alert_id": "MY-ALERT-001",
+  "severity": "CRITICAL",
+  "summary": "SSH_BRUTE_FORCE from 185.220.101.34 | MITRE: T1110.001",
+  "assigned_to": "SOC-TEAM",
+  "status": "OPEN",
+  "created_at": "2026-06-12T03:34:47.461323+00:00"
+}

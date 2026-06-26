@@ -1,0 +1,265 @@
+{
+  "alert": {
+    "alert_id": "BF-001",
+    "src_ip": "185.220.101.34",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 22,
+    "protocol": "TCP",
+    "rf_class": "BruteForce",
+    "ml_confidence": 0.96,
+    "bytes_in": 9400,
+    "bytes_out": 720,
+    "packets": 280,
+    "duration": 30.0,
+    "description": "SSH brute force t\u1eeb Tor exit node \u2014 12 failed attempts, 8 UFW blocks, probing root/admin/ubuntu/deploy/git/postgres",
+    "timestamp": "2026-06-12T03:32:54.560359+00:00"
+  },
+  "triage_result": {
+    "routing": {
+      "action": "escalate",
+      "priority": 9,
+      "justification": "SSH brute force r\u00f5 r\u00e0ng t\u1eeb Tor exit node (185.220.101.34) nh\u1eafm v\u00e0o internal host 192.168.1.10. ML confidence 0.96, 12 failed attempts, qu\u00e9t nhi\u1ec1u user ph\u1ed5 bi\u1ebfn, 8 l\u1ea7n b\u1ecb UFW block. C\u1ea7n ph\u1ea3n \u1ee9ng ngay \u0111\u1ec3 tr\u00e1nh compromise.",
+      "key_indicators": [
+        "src_ip l\u00e0 Tor exit node (185.220.101.34)",
+        "ML confidence 0.96",
+        "12 failed SSH attempts",
+        "8 UFW blocks",
+        "Qu\u00e9t user: root/admin/ubuntu/deploy/git/postgres",
+        "T\u1ec9 l\u1ec7 bytes_in/bytes_out b\u1ea5t th\u01b0\u1eddng (9400/720)",
+        "Internal target (192.168.1.10:22)"
+      ]
+    },
+    "alert": {
+      "alert_id": "BF-001",
+      "src_ip": "185.220.101.34",
+      "dst_ip": "192.168.1.10",
+      "dst_port": 22,
+      "protocol": "TCP",
+      "rf_class": "BruteForce",
+      "ml_confidence": 0.96,
+      "bytes_in": 9400,
+      "bytes_out": 720,
+      "packets": 280,
+      "duration": 30.0,
+      "description": "SSH brute force t\u1eeb Tor exit node \u2014 12 failed attempts, 8 UFW blocks, probing root/admin/ubuntu/deploy/git/postgres",
+      "timestamp": "2026-06-12T03:32:54.560359+00:00"
+    },
+    "error": null
+  },
+  "stage1_results": {
+    "pcap": {
+      "flow_features": {
+        "packet_count": 280,
+        "total_bytes": 10120,
+        "duration_sec": 30.0,
+        "packets_per_sec": 9.33,
+        "bytes_per_packet": 36.1,
+        "bytes_per_sec": 337.3,
+        "dst_port": 22,
+        "bytes_in": 9400,
+        "bytes_out": 720,
+        "payload_entropy": 4.5,
+        "syn_count": 0,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [
+        "SSH_HIGH_RATE"
+      ],
+      "flow_signature_match": "SSH_BRUTE_FORCE",
+      "risk_score": 0.72,
+      "error": null
+    },
+    "log_collect": {
+      "auth_log_events": [
+        "# SSH Brute Force t\u00e1\u00bb\u00ab 185.220.101.34 (Tor exit node)",
+        "Jun 11 08:12:01 server sshd[2100]: Failed password for root from 185.220.101.34 port 51001 ssh2",
+        "Jun 11 08:12:03 server sshd[2100]: Failed password for root from 185.220.101.34 port 51002 ssh2",
+        "Jun 11 08:12:05 server sshd[2100]: Invalid user admin from 185.220.101.34 port 51003",
+        "Jun 11 08:12:07 server sshd[2100]: Failed password for ubuntu from 185.220.101.34 port 51004 ssh2",
+        "Jun 11 08:12:09 server sshd[2100]: Invalid user pi from 185.220.101.34 port 51005",
+        "Jun 11 08:12:11 server sshd[2100]: Failed password for root from 185.220.101.34 port 51006 ssh2",
+        "Jun 11 08:12:13 server sshd[2100]: Failed password for user from 185.220.101.34 port 51007 ssh2",
+        "Jun 11 08:12:15 server sshd[2100]: Invalid user oracle from 185.220.101.34 port 51008",
+        "Jun 11 08:12:17 server sshd[2100]: Failed password for deploy from 185.220.101.34 port 51009 ssh2",
+        "Jun 11 08:12:19 server sshd[2100]: Failed password for git from 185.220.101.34 port 51010 ssh2",
+        "Jun 11 08:12:21 server sshd[2100]: Failed password for postgres from 185.220.101.34 port 51011 ssh2",
+        "Jun 11 08:12:23 server sshd[2100]: Failed password for test from 185.220.101.34 port 51012 ssh2"
+      ],
+      "firewall_events": [
+        "# SSH Brute Force blocks \u00e2\u20ac\u201d 185.220.101.34",
+        "Jun 11 08:12:01 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51001",
+        "Jun 11 08:12:03 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51002",
+        "Jun 11 08:12:05 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51003",
+        "Jun 11 08:12:07 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51004",
+        "Jun 11 08:12:09 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51005",
+        "Jun 11 08:12:11 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51006",
+        "Jun 11 08:12:13 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51007",
+        "Jun 11 08:12:15 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=51008"
+      ],
+      "syslog_events": [
+        "Jun 11 08:12:01 server sshd[2100]: Connection from 185.220.101.34 port 51001",
+        "Jun 11 08:12:03 server sshd[2100]: Connection from 185.220.101.34 port 51002",
+        "Jun 11 08:12:30 server sshd[2100]: Disconnecting invalid user root 185.220.101.34 port 51001: Too many authentication failures"
+      ],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T14:45:25.865536+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"MY-ALERT-001\", \"src_ip\": \"185.220.101.34\", \"rf_class\": \"BruteForce\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"a8e57429757453ebbc8cd1f460993dc39e49df68bf8654b38ff48f17162831c3\"}",
+        "{\"ts\": \"2026-06-11T14:45:28.437529+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"185.220.101.34\", \"prev_hash\": \"0ce540da87b6b00ce9be314d745704ba4b55b28f0ca79f6d7776bfe9fecfd88b\", \"hash\": \"0b7f89dd01632bf099cd6d524cea93d23e387ec87bf27bf22285aadfe22da3f7\"}",
+        "{\"ts\": \"2026-06-11T15:01:34.039318+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"MY-ALERT-001\", \"src_ip\": \"185.220.101.34\", \"rf_class\": \"BruteForce\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"e32cfc6be01f9767d5899157ee446faadeaf5562636bae2ac17ec213f1b1def8\"}",
+        "{\"ts\": \"2026-06-11T15:01:42.964821+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"185.220.101.34\", \"prev_hash\": \"40c258f4a0db05895e014b4b3959539b8af257039e77d850c523eb6cf12e5a13\", \"hash\": \"8e6b987e612a2e8b13a05e4609394dd1523efb099b4bb1ee9107781e390bd036\"}",
+        "{\"ts\": \"2026-06-11T15:03:56.268487+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"MY-ALERT-001\", \"src_ip\": \"185.220.101.34\", \"rf_class\": \"BruteForce\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"87d3a14e1d9e5abfe5128ccd24729f283ac5bdefb309b762d99ae159ca6d8304\"}",
+        "{\"ts\": \"2026-06-11T15:04:05.736825+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"185.220.101.34\", \"prev_hash\": \"f1b9f9157cf07d8e2b3c2004d0073e4b38fd1a0e989c66704d5f66629132c67c\", \"hash\": \"c98d5c0377980483304af9023c8ee1525773038b50b9916f4892172107cf1ca8\"}",
+        "{\"ts\": \"2026-06-11T15:06:49.655333+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"MY-ALERT-001\", \"src_ip\": \"185.220.101.34\", \"rf_class\": \"BruteForce\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"80ad98804f0acde0b736ba17cd16335a6c46114a32c3ad5bbb725a88fde1a0ae\"}",
+        "{\"ts\": \"2026-06-11T15:06:59.022418+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"185.220.101.34\", \"prev_hash\": \"5d6629a61eb621bcb9962f052062437587a53eecb32aa2052725fe31fe5e20c7\", \"hash\": \"2fc55daa1d60745cf9aa0263f1a6b792b5802ad3470228c1c43dcc754cb5a8eb\"}",
+        "{\"ts\": \"2026-06-11T15:08:13.288818+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"MY-ALERT-001\", \"src_ip\": \"185.220.101.34\", \"rf_class\": \"BruteForce\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"eae48af6ac7bf2422313ad05b2f71a820fabeaf2a8fd2be7ced5fde95805827c\"}",
+        "{\"ts\": \"2026-06-11T15:08:23.502190+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"185.220.101.34\", \"prev_hash\": \"1cc456c89a0ee40a63cc731172a12b844807d158de8666c2bc1411e35911878f\", \"hash\": \"237f4cc28ed620eebc1bfb23d5f16c8e34717ef2e47efadd0e812808b4a062d1\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 12,
+        "blocked_connections": 9,
+        "targeted_ports": [
+          22,
+          51008,
+          51009,
+          51010,
+          51011,
+          51012,
+          51001,
+          51002,
+          51003,
+          51004,
+          51005
+        ],
+        "attack_pattern": "SSH_BRUTE_FORCE",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "recon": {
+      "error": "Timeout after 30.0s",
+      "timed_out": true
+    }
+  },
+  "stage2_results": {
+    "mitre_map": {
+      "query_vector": [
+        0.0,
+        0.5558,
+        0.5856,
+        0.3756,
+        0.0241,
+        0.016,
+        0.5625,
+        0.0,
+        0.1667,
+        0.96
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.8016,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.7981,
+          "description": "Learned centroid from training data (T1498)"
+        },
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.7535,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "T1595.001",
+          "name": "Active Scanning: Scanning IP Blocks",
+          "tactic": "Reconnaissance",
+          "similarity": 0.742,
+          "description": "Learned centroid from training data (T1595.001)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.6845,
+          "description": "Learned centroid from training data (T1110.001)"
+        }
+      ],
+      "best_technique": "BENIGN",
+      "best_technique_name": "False Positive / Benign Traffic",
+      "best_tactic": "N/A",
+      "best_similarity": 0.8016,
+      "is_known_technique": false,
+      "is_anomaly": false,
+      "anomaly_score": null,
+      "model_used": "cosine_similarity",
+      "technique_risk_score": 0.24,
+      "error": null
+    },
+    "ml_classify": {
+      "classification": {
+        "incident_type": "SSH_BRUTE_FORCE",
+        "severity": "CRITICAL",
+        "mitre_technique": "T1110.001",
+        "mitre_tactic": "TA0006",
+        "confidence": 0.94,
+        "is_true_positive": true,
+        "rationale": "SSH brute force confirmed t\u1eeb Tor exit node (185.220.101.34). Stage 1B ghi nh\u1eadn 12 failed auth + 9 firewall blocks, Stage 1C x\u00e1c nh\u1eadn SSH_BRUTE_FORCE signature v\u1edbi SSH_HIGH_RATE anomaly. Bytes/packet = 36.1 (r\u1ea5t th\u1ea5p, \u0111\u1eb7c tr\u01b0ng brute force). Alert g\u1ed1c m\u00f4 t\u1ea3 r\u00f5 Tor exit node attack probing root/admin/ubuntu/deploy/git/postgres. M\u1eb7c d\u00f9 AbuseIPDB = 0, log + PCAP evidence r\u1ea5t m\u1ea1nh v\u00e0 \u0111\u1ed3ng nh\u1ea5t. Tor exit node \u2192 t\u1ef1 \u0111\u1ed9ng elevate l\u00ean CRITICAL. src_ip l\u00e0 public IP n\u00ean true positive.",
+        "secondary_techniques": [
+          "T1595.001"
+        ]
+      },
+      "containment_steps": [
+        "Block source IP t\u1ea1i firewall 24h",
+        "B\u1eadt account lockout policy (\u22645 attempts)",
+        "B\u1eaft bu\u1ed9c MFA cho t\u1ea5t c\u1ea3 remote access",
+        "Rotate credentials c\u1ee7a t\u00e0i kho\u1ea3n b\u1ecb t\u1ea5n c\u00f4ng",
+        "Deploy fail2ban ho\u1eb7c t\u01b0\u01a1ng \u0111\u01b0\u01a1ng"
+      ],
+      "mitre_details": {
+        "name": "Brute Force: Password Guessing",
+        "tactic": "Credential Access",
+        "containment": [
+          "Block source IP t\u1ea1i firewall 24h",
+          "B\u1eadt account lockout policy (\u22645 attempts)",
+          "B\u1eaft bu\u1ed9c MFA cho t\u1ea5t c\u1ea3 remote access",
+          "Rotate credentials c\u1ee7a t\u00e0i kho\u1ea3n b\u1ecb t\u1ea5n c\u00f4ng",
+          "Deploy fail2ban ho\u1eb7c t\u01b0\u01a1ng \u0111\u01b0\u01a1ng"
+        ]
+      },
+      "secondary_techniques": [
+        "T1595.001"
+      ],
+      "error": null
+    }
+  },
+  "response_result": {
+    "ticket_id": "INC-20260612-BF-001",
+    "actions_taken": [
+      "created_ticket:INC-20260612-BF-001",
+      "notified_analyst",
+      "blocked_ip:185.220.101.34"
+    ],
+    "blocked_ips": [
+      "185.220.101.34"
+    ],
+    "severity": "CRITICAL",
+    "error": null
+  },
+  "report": {
+    "incident_id": "INC-20260612_033349-BF-001",
+    "report_path": "reports\\185_220_101_34_20260612_033349_incident.md",
+    "outcome": "BLOCKED",
+    "error": null
+  },
+  "outcome": "BLOCKED",
+  "error": null,
+  "pipeline_duration_sec": 54.79
+}

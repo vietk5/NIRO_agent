@@ -1,0 +1,14 @@
+{
+  "alert_id":      "MY-ALERT-001",
+  "src_ip":        "185.220.101.34",
+  "dst_ip":        "192.168.1.10",
+  "dst_port":      22,
+  "protocol":      "TCP",
+  "rf_class":      "BruteForce",
+  "ml_confidence": 0.96,
+  "bytes_in":      9400,
+  "bytes_out":     720,
+  "packets":       280,
+  "duration":      90.0,
+  "description":   "SSH brute force từ Tor exit node — thay bằng alert thực tế của bạn"
+}

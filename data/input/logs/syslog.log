@@ -1,0 +1,35 @@
+# Syslog — mixed events
+
+# SYN Flood / DDoS từ 198.51.100.77
+Jun 11 07:00:01 server kernel: TCP: Possible SYN flooding on port 80. Sending cookies.
+Jun 11 07:00:01 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:02 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:03 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:04 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:05 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:10 server kernel: net_ratelimit: 847 callbacks suppressed
+Jun 11 07:00:10 server kernel: TCP: too many orphaned sockets
+Jun 11 07:00:15 server kernel: possible SYN flooding detected, source: 198.51.100.77
+Jun 11 07:01:00 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:01:01 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:01:02 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+
+# Data Exfiltration nghi ngờ từ internal host 192.168.1.55
+Jun 11 10:30:00 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500
+Jun 11 10:30:01 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500
+Jun 11 10:30:02 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500
+Jun 11 10:30:03 server rsyslogd: large outbound transfer detected: 192.168.1.55 to 104.21.45.200 bytes=2847392
+Jun 11 10:30:05 server rsyslogd: large outbound transfer detected: 192.168.1.55 to 104.21.45.200 bytes=5129847
+
+# SSH BruteForce + conntrack
+Jun 11 08:11:55 server kernel: TCP: request_sock_TCP: Possible SYN flooding on port 22
+Jun 11 08:12:00 server kernel: nf_conntrack: table full, dropping packet
+Jun 11 08:12:01 server sshd[2100]: Connection from 185.220.101.34 port 51001
+Jun 11 08:12:03 server sshd[2100]: Connection from 185.220.101.34 port 51002
+Jun 11 08:12:30 server sshd[2100]: Disconnecting invalid user root 185.220.101.34 port 51001: Too many authentication failures
+
+# Normal operations
+Jun 11 06:00:01 server cron[1234]: (root) CMD (/usr/sbin/logrotate /etc/logrotate.conf)
+Jun 11 08:14:00 server sshd[2101]: Accepted connection from 10.0.1.5
+Jun 11 08:14:01 server sudo[2200]: deploy : TTY=pts/0 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/systemctl status nginx
+Jun 11 12:00:01 server cron[1235]: (root) CMD (test -e /run/systemd/system)

@@ -1,0 +1,30 @@
+{
+  "routing": {
+    "action": "escalate",
+    "priority": 9,
+    "justification": "SSH brute force từ Tor exit node (185.220.101.34) với ML confidence 0.96. 12 lần thử thất bại, quét 6 user phổ biến (root, admin, ubuntu, deploy, git, postgres), 8 lần bị UFW chặn. Tỉ lệ bytes_in/bytes_out bất thường (13:1) và 280 packets trong 30s cho thấy tấn công đang tích cực. Cần block ngay IP nguồn và kiểm tra host nội bộ.",
+    "key_indicators": [
+      "Tor exit node source IP",
+      "ML confidence 0.96",
+      "12 failed SSH attempts",
+      "8 UFW blocks",
+      "Quét nhiều user nhạy cảm",
+      "Tỉ lệ bytes_in/bytes_out bất thường"
+    ]
+  },
+  "alert": {
+    "alert_id": "BF-001",
+    "src_ip": "185.220.101.34",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 22,
+    "protocol": "TCP",
+    "rf_class": "BruteForce",
+    "ml_confidence": 0.96,
+    "bytes_in": 9400,
+    "bytes_out": 720,
+    "packets": 280,
+    "duration": 30.0,
+    "description": "SSH brute force từ Tor exit node — 12 failed attempts, 8 UFW blocks, probing root/admin/ubuntu/deploy/git/postgres"
+  },
+  "error": null
+}

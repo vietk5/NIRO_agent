@@ -1,0 +1,30 @@
+{
+  "routing": {
+    "action": "escalate",
+    "priority": 9,
+    "justification": "DNS tunneling rõ ràng từ IP public (203.0.113.45) đến DNS server nội bộ (192.168.1.10). ML confidence 0.92, lưu lượng bất thường (420 packets/10s), query đến các domain C2/exfiltration rõ ràng (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru). Cần phản ứng ngay để ngăn chặn exfiltration dữ liệu.",
+    "key_indicators": [
+      "src_ip là IP public (203.0.113.45)",
+      "ML confidence 0.92",
+      "RF Class: DNS Tunneling",
+      "Domain C2 rõ ràng: tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru",
+      "Lưu lượng bất thường: 420 packets / 10 giây (~42 pps)",
+      "Tỉ lệ bytes in/out bất thường cho DNS"
+    ]
+  },
+  "alert": {
+    "alert_id": "DNS-001",
+    "src_ip": "203.0.113.45",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 53,
+    "protocol": "UDP",
+    "rf_class": "DNS Tunneling",
+    "ml_confidence": 0.92,
+    "bytes_in": 4800,
+    "bytes_out": 3200,
+    "packets": 420,
+    "duration": 10.0,
+    "description": "DNS tunneling — 8+ queries to tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru"
+  },
+  "error": null
+}

@@ -1,0 +1,13 @@
+NIRO — Centroid Signatures Training Report
+Dataset: data/training/labeled.jsonl  |  Samples: 20435
+=================================================================
+  Class                Samples  Top-3 features (max dim)
+-----------------------------------------------------------------
+  T1041                   1119  threat_score=1.00, ml_confidence=1.00, anomaly_cnt=0.49
+  T1071.001               1697  ml_confidence=1.00, threat_score=0.97, pps=0.91
+  BENIGN                  8040  ml_confidence=1.00, pps=0.59, entropy=0.33
+  T1498                   3195  ml_confidence=1.00, threat_score=0.99, failed_auth=0.85
+  T1595.001               3204  ml_confidence=1.00, threat_score=1.00, pps=0.99
+  T1110.001               3180  ml_confidence=1.00, threat_score=1.00, anomaly_cnt=0.50
+=================================================================
+  Total: 20435 samples  |  6 classes

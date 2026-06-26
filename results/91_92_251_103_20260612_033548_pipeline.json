@@ -1,0 +1,214 @@
+{
+  "alert": {
+    "alert_id": "WEB-001",
+    "src_ip": "91.92.251.103",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 80,
+    "protocol": "TCP",
+    "rf_class": "WebScan",
+    "ml_confidence": 0.85,
+    "bytes_in": 2400,
+    "bytes_out": 1800,
+    "packets": 180,
+    "duration": 15.0,
+    "description": "Web vulnerability scan \u2014 probing /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql",
+    "timestamp": "2026-06-12T03:34:55.757467+00:00"
+  },
+  "triage_result": {
+    "routing": {
+      "action": "escalate",
+      "priority": 9,
+      "justification": "Web vulnerability scan t\u1eeb IP c\u00f4ng c\u1ed9ng (91.92.251.103) nh\u1eafm v\u00e0o server n\u1ed9i b\u1ed9 (192.168.1.10). Qu\u00e9t h\u00e0ng lo\u1ea1t endpoint nh\u1ea1y c\u1ea3m (/admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql) \u2014 \u0111\u00e2y l\u00e0 h\u00e0nh vi reconnaissance c\u00f3 ch\u1ee7 \u0111\u00edch, t\u00ecm ki\u1ebfm l\u1ed7 h\u1ed5ng \u0111\u1ec3 khai th\u00e1c. ML confidence 0.85, RF class WebScan kh\u1edbp ho\u00e0n to\u00e0n. C\u1ea7n ph\u1ea3n \u1ee9ng ngay \u0111\u1ec3 ch\u1eb7n IP v\u00e0 ki\u1ec3m tra server.",
+      "key_indicators": [
+        "src_ip l\u00e0 IP c\u00f4ng c\u1ed9ng (91.92.251.103)",
+        "dst_ip l\u00e0 IP n\u1ed9i b\u1ed9 (192.168.1.10) \u2014 b\u1ecb qu\u00e9t t\u1eeb ngo\u00e0i v\u00e0o",
+        "RF class = WebScan",
+        "ML confidence = 0.85 (cao)",
+        "Qu\u00e9t nhi\u1ec1u endpoint nh\u1ea1y c\u1ea3m: /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql",
+        "180 packets trong 15s \u2014 qu\u00e9t t\u1ef1 \u0111\u1ed9ng, t\u1ed1c \u0111\u1ed9 cao"
+      ]
+    },
+    "alert": {
+      "alert_id": "WEB-001",
+      "src_ip": "91.92.251.103",
+      "dst_ip": "192.168.1.10",
+      "dst_port": 80,
+      "protocol": "TCP",
+      "rf_class": "WebScan",
+      "ml_confidence": 0.85,
+      "bytes_in": 2400,
+      "bytes_out": 1800,
+      "packets": 180,
+      "duration": 15.0,
+      "description": "Web vulnerability scan \u2014 probing /admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql",
+      "timestamp": "2026-06-12T03:34:55.757467+00:00"
+    },
+    "error": null
+  },
+  "stage1_results": {
+    "pcap": {
+      "flow_features": {
+        "packet_count": 180,
+        "total_bytes": 4200,
+        "duration_sec": 15.0,
+        "packets_per_sec": 12.0,
+        "bytes_per_packet": 23.3,
+        "bytes_per_sec": 280.0,
+        "dst_port": 80,
+        "bytes_in": 2400,
+        "bytes_out": 1800,
+        "payload_entropy": 4.5,
+        "syn_count": 0,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [],
+      "flow_signature_match": "UNKNOWN",
+      "risk_score": 0.2,
+      "error": null
+    },
+    "log_collect": {
+      "auth_log_events": [],
+      "firewall_events": [
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80",
+        "Jun 12 03:35:06 firewall DROP SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=80"
+      ],
+      "syslog_events": [
+        "Jun 12 03:35:06 server kernel: possible SYN flooding on port 80 from 91.92.251.103"
+      ],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T16:27:32.772108+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"AUTO-006\", \"src_ip\": \"91.92.251.103\", \"rf_class\": \"VulnScan\", \"prev_hash\": \"f3e084f8c2acd474628aac26749624d4773e1bb268d40a1c82614b5da4aeff57\", \"hash\": \"c1cee0de048287454279e7aa92cf39b20f7a307c8279aea0d124472023f9989a\"}",
+        "{\"ts\": \"2026-06-11T16:27:42.657178+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"91.92.251.103\", \"prev_hash\": \"0ab00455c1f0812d725634d4af8bc22a752907c82331c3109c88973edd75a8ef\", \"hash\": \"d87ef20153496113a357884f94e75ac7cbb6a25b2045cc31a548b375760ee4ab\"}",
+        "{\"ts\": \"2026-06-12T03:34:55.757467+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"WEB-001\", \"src_ip\": \"91.92.251.103\", \"rf_class\": \"WebScan\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"b0d511dcc421c42fda4dc491a11a8b93e6800540ae44709fc4036b2017c92ee2\"}",
+        "{\"ts\": \"2026-06-12T03:35:06.030108+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"91.92.251.103\", \"prev_hash\": \"451fb36ac9ea733173c2ad6a3f1323ef62c23f5b1b2c4282948e4f167cca7764\", \"hash\": \"74144a4b66732f57aba1c9c6769d562f361d208bea3f4b2db10024861f4183e9\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 0,
+        "blocked_connections": 20,
+        "targeted_ports": [
+          80
+        ],
+        "attack_pattern": "UNKNOWN",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "recon": {
+      "error": "Timeout after 30.0s",
+      "timed_out": true
+    }
+  },
+  "stage2_results": {
+    "mitre_map": {
+      "query_vector": [
+        0.0,
+        0.0,
+        0.7743,
+        0.4126,
+        0.0155,
+        0.1213,
+        0.5625,
+        0.0,
+        0.0,
+        0.85
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.7555,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.6137,
+          "description": "Learned centroid from training data (T1498)"
+        },
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.6003,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "T1595.001",
+          "name": "Active Scanning: Scanning IP Blocks",
+          "tactic": "Reconnaissance",
+          "similarity": 0.5914,
+          "description": "Learned centroid from training data (T1595.001)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.5776,
+          "description": "Learned centroid from training data (T1110.001)"
+        }
+      ],
+      "best_technique": "BENIGN",
+      "best_technique_name": "False Positive / Benign Traffic",
+      "best_tactic": "N/A",
+      "best_similarity": 0.7555,
+      "is_known_technique": false,
+      "is_anomaly": false,
+      "anomaly_score": null,
+      "model_used": "cosine_similarity",
+      "technique_risk_score": 0.227,
+      "error": null
+    },
+    "ml_classify": {
+      "classification": {
+        "incident_type": "UNKNOWN",
+        "severity": "LOW",
+        "mitre_technique": "T1595.002",
+        "confidence": 0.55,
+        "is_true_positive": true,
+        "rationale": "Web vulnerability scan t\u1eeb IP 91.92.251.103 (public, kh\u00f4ng ph\u1ea3i Tor, AbuseIPDB score 0). Probe nhi\u1ec1u \u0111\u01b0\u1eddng d\u1eabn nh\u1ea1y c\u1ea3m (/admin, /wp-admin, /phpmyadmin, /.env, /shell.php, /.git/config, /backup.sql) tr\u00ean port 80. Tuy nhi\u00ean: (1) kh\u00f4ng kh\u1edbp ho\u00e0n to\u00e0n 5 lo\u1ea1i incident ch\u00ednh \u2014 kh\u00f4ng ph\u1ea3i SSH brute force (failed_auth=0), kh\u00f4ng ph\u1ea3i port scan (1 port duy nh\u1ea5t), kh\u00f4ng ph\u1ea3i DDoS (12 pps), kh\u00f4ng ph\u1ea3i data exfiltration (bytes c\u00e2n b\u1eb1ng), kh\u00f4ng ph\u1ea3i C2 (kh\u00f4ng c\u00f3 beaconing pattern); (2) firewall \u0111\u00e3 ch\u1eb7n 20 l\u1ea7n, h\u1ea1n ch\u1ebf t\u00e1c \u0111\u1ed9ng; (3) PCAP kh\u00f4ng ghi nh\u1eadn anomaly. X\u1ebfp lo\u1ea1i UNKNOWN do thi\u1ebfu category WEB_SCAN, severity LOW v\u00ec evidence y\u1ebfu v\u00e0 \u0111\u00e3 b\u1ecb ch\u1eb7n. MITRE mapping g\u1ea7n nh\u1ea5t: T1595.002 (Vulnerability Scanning).",
+        "secondary_techniques": [
+          "T1595.002"
+        ]
+      },
+      "containment_steps": [
+        "Ghi ch\u00e9p findings v\u00e0o incident ticket"
+      ],
+      "mitre_details": {},
+      "secondary_techniques": [
+        "T1595.002"
+      ],
+      "error": null
+    }
+  },
+  "response_result": null,
+  "report": {
+    "incident_id": "INC-20260612_033548-WEB-001",
+    "report_path": "reports\\91_92_251_103_20260612_033548_incident.md",
+    "outcome": "MONITORED",
+    "error": null
+  },
+  "outcome": "MONITORED",
+  "error": null,
+  "pipeline_duration_sec": 52.99
+}

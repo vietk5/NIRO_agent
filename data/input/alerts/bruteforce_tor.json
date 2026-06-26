@@ -1,0 +1,9 @@
+{
+  "src_ip": "185.220.101.34",
+  "dst_port": 22,
+  "rf_class": "BruteForce",
+  "ml_confidence": 0.95,
+  "packets": 300,
+  "duration": 60.0,
+  "description": "SSH Brute Force from Tor exit node 185.220.101.34 — 24+ failed attempts targeting root, admin, ubuntu, deploy, git, postgres, oracle. UFW blocked. Conntrack table saturation."
+}

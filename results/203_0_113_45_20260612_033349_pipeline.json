@@ -1,0 +1,234 @@
+{
+  "alert": {
+    "alert_id": "DNS-001",
+    "src_ip": "203.0.113.45",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 53,
+    "protocol": "UDP",
+    "rf_class": "DNS Tunneling",
+    "ml_confidence": 0.92,
+    "bytes_in": 4800,
+    "bytes_out": 3200,
+    "packets": 420,
+    "duration": 10.0,
+    "description": "DNS tunneling \u2014 8+ queries to tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru",
+    "timestamp": "2026-06-12T03:32:54.560359+00:00"
+  },
+  "triage_result": {
+    "routing": {
+      "action": "escalate",
+      "priority": 9,
+      "justification": "DNS Tunneling v\u1edbi ML confidence 0.92, k\u1ebft n\u1ed1i \u0111\u1ebfn nhi\u1ec1u domain \u0111\u1ed9c h\u1ea1i r\u00f5 r\u00e0ng (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru). L\u01b0u l\u01b0\u1ee3ng b\u1ea5t th\u01b0\u1eddng: 420 g\u00f3i tin / 10 gi\u00e2y (~42 pps) v\u1edbi t\u1ed5ng ~8KB data qua DNS - d\u1ea5u hi\u1ec7u \u0111i\u1ec3n h\u00ecnh c\u1ee7a data exfiltration qua DNS tunnel. Source IP public (203.0.113.45) \u0111ang giao ti\u1ebfp v\u1edbi internal DNS server (192.168.1.10). C\u1ea7n ph\u1ea3n \u1ee9ng ngay \u0111\u1ec3 ng\u0103n ch\u1eb7n exfiltration.",
+      "key_indicators": [
+        "ML confidence 0.92",
+        "DNS Tunneling RF class",
+        "Domain: tunnel.evil.com",
+        "Domain: c2channel.net",
+        "Domain: exfil.badguy.io",
+        "Domain: malware-host.ru",
+        "420 packets / 10s",
+        "~8KB data qua DNS",
+        "Source IP public -> Internal DNS"
+      ]
+    },
+    "alert": {
+      "alert_id": "DNS-001",
+      "src_ip": "203.0.113.45",
+      "dst_ip": "192.168.1.10",
+      "dst_port": 53,
+      "protocol": "UDP",
+      "rf_class": "DNS Tunneling",
+      "ml_confidence": 0.92,
+      "bytes_in": 4800,
+      "bytes_out": 3200,
+      "packets": 420,
+      "duration": 10.0,
+      "description": "DNS tunneling \u2014 8+ queries to tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru",
+      "timestamp": "2026-06-12T03:32:54.560359+00:00"
+    },
+    "error": null
+  },
+  "stage1_results": {
+    "pcap": {
+      "flow_features": {
+        "packet_count": 420,
+        "total_bytes": 8000,
+        "duration_sec": 10.0,
+        "packets_per_sec": 42.0,
+        "bytes_per_packet": 19.0,
+        "bytes_per_sec": 800.0,
+        "dst_port": 53,
+        "bytes_in": 4800,
+        "bytes_out": 3200,
+        "payload_entropy": 4.5,
+        "syn_count": 0,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [],
+      "flow_signature_match": "UNKNOWN",
+      "risk_score": 0.2,
+      "error": null
+    },
+    "log_collect": {
+      "auth_log_events": [
+        "# DNS Tunneling t\u00e1\u00bb\u00ab 203.0.113.45",
+        "Jun 11 10:15:00 server named[4001]: client 203.0.113.45#54321: query: abc123def456.tunnel.evil.com IN TXT",
+        "Jun 11 10:15:01 server named[4001]: client 203.0.113.45#54322: query: xyz789ghi012.tunnel.evil.com IN TXT",
+        "Jun 11 10:15:02 server named[4001]: client 203.0.113.45#54323: query: payload001.c2channel.net IN A",
+        "Jun 11 10:15:03 server named[4001]: client 203.0.113.45#54324: query: payload002.c2channel.net IN A",
+        "Jun 11 10:15:04 server named[4001]: client 203.0.113.45#54325: query: data.exfil.badguy.io IN TXT",
+        "Jun 11 10:15:05 server named[4001]: client 203.0.113.45#54326: query: chunk01.exfil.badguy.io IN TXT",
+        "Jun 11 10:15:06 server named[4001]: client 203.0.113.45#54327: query: chunk02.exfil.badguy.io IN TXT",
+        "Jun 11 10:15:07 server named[4001]: client 203.0.113.45#54328: query: chunk03.exfil.badguy.io IN TXT"
+      ],
+      "firewall_events": [
+        "Jun 11 10:15:00 server kernel: [UFW BLOCK] IN=eth0 SRC=203.0.113.45 DST=192.168.1.10 PROTO=UDP DPT=53 SPT=54321",
+        "Jun 11 10:15:01 server kernel: [UFW BLOCK] IN=eth0 SRC=203.0.113.45 DST=192.168.1.10 PROTO=UDP DPT=53 SPT=54322"
+      ],
+      "syslog_events": [],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T16:25:50.697293+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"AUTO-004\", \"src_ip\": \"203.0.113.45\", \"rf_class\": \"DNSTunnel\", \"prev_hash\": \"d3930e4380ea6db4aa88aa933199072faa5141886d6b28b78058c1c5b8e59e97\", \"hash\": \"0c2300848b91ffa8be9952aef94bfc9d38171523cdffeaa91b26c3a89dd57a6d\"}",
+        "{\"ts\": \"2026-06-11T16:25:58.411745+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"203.0.113.45\", \"prev_hash\": \"2fd209ac4a986db1d58643d874f14909286ce16133514a1e36ff8ea48d329c2f\", \"hash\": \"fc3640c5e6c4407be0ae103f0c8f062516fb58db3af6d837b846f05d31a17c7a\"}",
+        "{\"ts\": \"2026-06-12T03:32:54.560359+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"DNS-001\", \"src_ip\": \"203.0.113.45\", \"rf_class\": \"DNS Tunneling\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"ff60e01dd00e5d7fc7e825daf9c4e19c1a33e718b7401c7d32ff1ff4f3c4e3a8\"}",
+        "{\"ts\": \"2026-06-12T03:33:05.339427+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"203.0.113.45\", \"prev_hash\": \"c5124e3f8306a430444e5ed8b2498e6480edbd9beff4c395c0d59035ad7f0d72\", \"hash\": \"1fc6824d30d0bae96a21027a0731fc6a71437df45265f0a2175486751e973509\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 0,
+        "blocked_connections": 2,
+        "targeted_ports": [
+          53
+        ],
+        "attack_pattern": "UNKNOWN",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "recon": {
+      "error": "Timeout after 30.0s",
+      "timed_out": true
+    }
+  },
+  "stage2_results": {
+    "mitre_map": {
+      "query_vector": [
+        0.0,
+        0.0,
+        0.2794,
+        0.605,
+        0.0127,
+        0.1107,
+        0.5625,
+        0.0,
+        0.0,
+        0.92
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.9082,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.7074,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "T1595.001",
+          "name": "Active Scanning: Scanning IP Blocks",
+          "tactic": "Reconnaissance",
+          "similarity": 0.6992,
+          "description": "Learned centroid from training data (T1595.001)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.6722,
+          "description": "Learned centroid from training data (T1498)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.6466,
+          "description": "Learned centroid from training data (T1110.001)"
+        }
+      ],
+      "best_technique": "BENIGN",
+      "best_technique_name": "False Positive / Benign Traffic",
+      "best_tactic": "N/A",
+      "best_similarity": 0.9082,
+      "is_known_technique": false,
+      "is_anomaly": false,
+      "anomaly_score": null,
+      "model_used": "cosine_similarity",
+      "technique_risk_score": 0.272,
+      "error": null
+    },
+    "ml_classify": {
+      "classification": {
+        "incident_type": "MALWARE_C2",
+        "severity": "HIGH",
+        "mitre_technique": "T1071.001",
+        "mitre_tactic": "Command and Control",
+        "confidence": 0.78,
+        "is_true_positive": true,
+        "rationale": "DNS tunneling detected: 8+ queries t\u1eeb 203.0.113.45 \u0111\u1ebfn c\u00e1c domain \u0111\u00e1ng ng\u1edd (tunnel.evil.com, c2channel.net, exfil.badguy.io, malware-host.ru) qua port 53/UDP. ML model g\u1ed1c confidence 0.92. PCAP cho th\u1ea5y bytes/packet = 19.0 (r\u1ea5t th\u1ea5p, \u0111\u1eb7c tr\u01b0ng DNS query nh\u1ecf). T\u1ec9 l\u1ec7 packets/duration = 42 pps v\u1edbi 420 packets trong 10s \u2014 t\u1ea7n su\u1ea5t cao b\u1ea5t th\u01b0\u1eddng cho DNS th\u00f4ng th\u01b0\u1eddng. AbuseIPDB score = 0 (kh\u00f4ng c\u00f3 ti\u1ec1n s\u1eed) l\u00e0m gi\u1ea3m nh\u1eb9 confidence. src_ip l\u00e0 public IP n\u00ean true positive. Ph\u00e2n lo\u1ea1i MALWARE_C2 (DNS tunneling) mapping T1071.001 \u2014 Application Layer Protocol: DNS.",
+        "secondary_techniques": [
+          "T1041",
+          "T1572"
+        ]
+      },
+      "containment_steps": [
+        "Block C2 domain/IP t\u1ea1i DNS v\u00e0 firewall",
+        "C\u00f4 l\u1eadp host nghi ng\u1edd",
+        "Ph\u00e2n t\u00edch memory dump \u0111\u1ec3 t\u00ecm malware",
+        "Review t\u1ea5t c\u1ea3 outbound HTTPS connections"
+      ],
+      "mitre_details": {
+        "name": "Application Layer Protocol: Web Protocols",
+        "tactic": "Command and Control",
+        "containment": [
+          "Block C2 domain/IP t\u1ea1i DNS v\u00e0 firewall",
+          "C\u00f4 l\u1eadp host nghi ng\u1edd",
+          "Ph\u00e2n t\u00edch memory dump \u0111\u1ec3 t\u00ecm malware",
+          "Review t\u1ea5t c\u1ea3 outbound HTTPS connections"
+        ]
+      },
+      "secondary_techniques": [
+        "T1041",
+        "T1572"
+      ],
+      "error": null
+    }
+  },
+  "response_result": {
+    "ticket_id": "INC-20260612-DNS-001",
+    "actions_taken": [
+      "created_ticket:INC-20260612-DNS-001",
+      "notified_analyst",
+      "blocked_ip:203.0.113.45"
+    ],
+    "blocked_ips": [
+      "203.0.113.45"
+    ],
+    "severity": "HIGH",
+    "error": null
+  },
+  "report": {
+    "incident_id": "INC-20260612_033349-DNS-001",
+    "report_path": "reports\\203_0_113_45_20260612_033349_incident.md",
+    "outcome": "BLOCKED",
+    "error": null
+  },
+  "outcome": "BLOCKED",
+  "error": null,
+  "pipeline_duration_sec": 55.06
+}

@@ -1,0 +1,146 @@
+# ============================================================
+# Mixed Realistic Log — NIRO Test Dataset
+# Timeline: 2026-06-11 00:00 → 23:59
+# Chứa: Normal traffic + 5 loại tấn công xen kẽ
+# ============================================================
+
+# --- 00:00 Normal overnight cron ---
+Jun 11 00:00:01 server cron[1001]: (root) CMD (/usr/sbin/logrotate /etc/logrotate.conf)
+Jun 11 00:05:00 server systemd[1]: Starting Daily apt upgrade...
+Jun 11 00:30:00 server sshd[1010]: Accepted publickey for backup from 10.0.0.5 port 44000 ssh2
+Jun 11 00:30:01 server sshd[1010]: pam_unix(sshd:session): session opened for user backup
+Jun 11 00:35:00 server sshd[1010]: pam_unix(sshd:session): session closed for user backup
+
+# --- 02:15 SSH Brute Force bắt đầu — 185.220.101.34 (Tor) ---
+Jun 11 02:15:01 server sshd[2001]: Failed password for root from 185.220.101.34 port 52001 ssh2
+Jun 11 02:15:03 server sshd[2001]: Failed password for root from 185.220.101.34 port 52002 ssh2
+Jun 11 02:15:05 server sshd[2001]: Invalid user admin from 185.220.101.34 port 52003
+Jun 11 02:15:07 server sshd[2001]: Failed password for ubuntu from 185.220.101.34 port 52004 ssh2
+Jun 11 02:15:09 server sshd[2001]: Invalid user pi from 185.220.101.34 port 52005
+Jun 11 02:15:11 server sshd[2001]: Failed password for root from 185.220.101.34 port 52006 ssh2
+Jun 11 02:15:13 server sshd[2001]: Failed password for deploy from 185.220.101.34 port 52007 ssh2
+Jun 11 02:15:15 server sshd[2001]: Invalid user oracle from 185.220.101.34 port 52008
+Jun 11 02:15:17 server sshd[2001]: Failed password for git from 185.220.101.34 port 52009 ssh2
+Jun 11 02:15:19 server sshd[2001]: Failed password for postgres from 185.220.101.34 port 52010 ssh2
+Jun 11 02:15:21 server sshd[2001]: Failed password for test from 185.220.101.34 port 52011 ssh2
+Jun 11 02:15:23 server sshd[2001]: Failed password for user from 185.220.101.34 port 52012 ssh2
+Jun 11 02:15:30 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=52001
+Jun 11 02:15:32 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=52002
+Jun 11 02:15:34 server kernel: [UFW BLOCK] IN=eth0 SRC=185.220.101.34 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=52003
+Jun 11 02:15:40 server sshd[2001]: Disconnecting invalid user root 185.220.101.34: Too many authentication failures
+
+# --- 03:00 Normal dev login ---
+Jun 11 03:00:00 server sshd[2100]: Accepted publickey for alice from 10.10.1.100 port 55100 ssh2
+Jun 11 03:00:01 server sshd[2100]: pam_unix(sshd:session): session opened for user alice
+Jun 11 03:45:00 server sshd[2100]: pam_unix(sshd:session): session closed for user alice
+
+# --- 04:30 Port Scan — 45.33.32.156 (Shodan) ---
+Jun 11 04:30:01 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=60001
+Jun 11 04:30:02 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=80 SPT=60002
+Jun 11 04:30:03 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=443 SPT=60003
+Jun 11 04:30:04 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=3306 SPT=60004
+Jun 11 04:30:05 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=5432 SPT=60005
+Jun 11 04:30:06 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=6379 SPT=60006
+Jun 11 04:30:07 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=27017 SPT=60007
+Jun 11 04:30:08 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=8080 SPT=60008
+Jun 11 04:30:09 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=8443 SPT=60009
+Jun 11 04:30:10 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=9200 SPT=60010
+Jun 11 04:30:11 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=2181 SPT=60011
+Jun 11 04:30:12 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=9092 SPT=60012
+Jun 11 04:30:13 server sshd[3001]: Invalid user test from 45.33.32.156 port 60001
+Jun 11 04:30:14 server sshd[3001]: Invalid user admin from 45.33.32.156 port 60002
+Jun 11 04:30:15 server sshd[3001]: Connection closed by 45.33.32.156 port 60003 [preauth]
+
+# --- 06:00 Normal web traffic ---
+Jun 11 06:00:00 server nginx[3100]: 10.10.1.50 - - "GET /api/health HTTP/1.1" 200 42
+Jun 11 06:00:01 server nginx[3100]: 10.10.1.51 - - "GET /api/status HTTP/1.1" 200 128
+Jun 11 06:05:00 server nginx[3100]: 10.10.1.50 - - "POST /api/login HTTP/1.1" 200 256
+Jun 11 06:30:00 server sshd[3200]: Accepted password for bob from 10.10.1.101 port 55200 ssh2
+
+# --- 07:00 DDoS SYN Flood — 198.51.100.77 ---
+Jun 11 07:00:01 server kernel: TCP: Possible SYN flooding on port 80. Sending cookies.
+Jun 11 07:00:01 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:02 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:03 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:04 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:05 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:06 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:07 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:08 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:09 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:10 server kernel: net_ratelimit: 847 callbacks suppressed
+Jun 11 07:00:10 server kernel: TCP: too many orphaned sockets
+Jun 11 07:00:15 server kernel: possible SYN flooding detected, source: 198.51.100.77
+Jun 11 07:00:20 server nginx[3100]: upstream timed out (110) while reading response header
+Jun 11 07:00:30 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:00:31 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+Jun 11 07:01:00 server kernel: nf_conntrack: table full, dropping packet from 198.51.100.77
+
+# --- 08:30 Normal ops ---
+Jun 11 08:30:00 server sshd[4001]: Accepted publickey for carol from 10.10.1.102 port 55300 ssh2
+Jun 11 08:30:01 server sudo[4002]: carol : COMMAND=/usr/bin/docker ps
+Jun 11 09:00:00 server nginx[3100]: 10.10.1.50 - - "GET /dashboard HTTP/1.1" 200 4096
+Jun 11 09:30:00 server cron[4100]: (root) CMD (/opt/backup/run.sh)
+
+# --- 10:15 DNS Tunneling — 203.0.113.45 ---
+Jun 11 10:15:00 server named[5001]: client 203.0.113.45#54321: query: abc123def456.tunnel.evil.com IN TXT
+Jun 11 10:15:01 server named[5001]: client 203.0.113.45#54322: query: xyz789ghi012.tunnel.evil.com IN TXT
+Jun 11 10:15:02 server named[5001]: client 203.0.113.45#54323: query: payload001.c2channel.net IN A
+Jun 11 10:15:03 server named[5001]: client 203.0.113.45#54324: query: payload002.c2channel.net IN A
+Jun 11 10:15:04 server named[5001]: client 203.0.113.45#54325: query: data0001.exfil.badactor.io IN TXT
+Jun 11 10:15:05 server named[5001]: client 203.0.113.45#54326: query: data0002.exfil.badactor.io IN TXT
+Jun 11 10:15:06 server named[5001]: client 203.0.113.45#54327: query: data0003.exfil.badactor.io IN TXT
+Jun 11 10:15:07 server named[5001]: client 203.0.113.45#54328: query: data0004.exfil.badactor.io IN TXT
+Jun 11 10:15:08 server named[5001]: client 203.0.113.45#54329: query: data0005.exfil.badactor.io IN TXT
+Jun 11 10:15:09 server named[5001]: client 203.0.113.45#54330: query: chunk001.c2.malware-host.ru IN TXT
+Jun 11 10:15:10 server kernel: [UFW BLOCK] IN=eth0 SRC=203.0.113.45 DST=192.168.1.10 PROTO=UDP DPT=53 SPT=54321
+Jun 11 10:15:11 server kernel: [UFW BLOCK] IN=eth0 SRC=203.0.113.45 DST=192.168.1.10 PROTO=UDP DPT=53 SPT=54322
+
+# --- 11:00 Normal lunch traffic ---
+Jun 11 11:00:00 server nginx[3100]: 10.10.1.50 - - "GET /api/users HTTP/1.1" 200 8192
+Jun 11 11:00:01 server nginx[3100]: 10.10.1.51 - - "POST /api/upload HTTP/1.1" 200 512
+Jun 11 11:30:00 server sshd[4200]: Accepted publickey for dave from 10.10.1.103 port 55400 ssh2
+Jun 11 11:30:01 server sshd[4200]: pam_unix(sshd:session): session opened for user dave
+
+# --- 13:00 Data Exfiltration — 192.168.1.55 (compromised internal) ---
+Jun 11 13:00:00 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500
+Jun 11 13:00:01 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500
+Jun 11 13:00:02 server kernel: [UFW BLOCK] IN=eth0 OUT=eth1 SRC=192.168.1.55 DST=104.21.45.200 PROTO=TCP DPT=443 LEN=1500
+Jun 11 13:00:03 server rsyslogd: large outbound transfer detected: 192.168.1.55 to 104.21.45.200 bytes=2847392
+Jun 11 13:00:05 server rsyslogd: large outbound transfer detected: 192.168.1.55 to 104.21.45.200 bytes=5129847
+Jun 11 13:00:07 server rsyslogd: large outbound transfer detected: 192.168.1.55 to 104.21.45.200 bytes=7823401
+Jun 11 13:00:10 server auditd[5200]: type=SYSCALL msg=audit: exe="/usr/bin/curl" key="data_exfil"
+Jun 11 13:00:11 server auditd[5200]: type=SYSCALL msg=audit: exe="/usr/bin/scp" key="data_exfil"
+
+# --- 14:00 Normal afternoon ---
+Jun 11 14:00:00 server nginx[3100]: 10.10.1.50 - - "GET /api/reports HTTP/1.1" 200 16384
+Jun 11 14:30:00 server sshd[4300]: Accepted publickey for alice from 10.10.1.100 port 55500 ssh2
+Jun 11 15:00:00 server nginx[3100]: 10.10.1.52 - - "POST /api/data HTTP/1.1" 201 256
+Jun 11 15:30:01 server sshd[4300]: pam_unix(sshd:session): session closed for user alice
+
+# --- 16:00 Vulnerability Scan — 91.92.251.103 ---
+Jun 11 16:00:01 server nginx[3100]: 91.92.251.103 - - "GET /admin HTTP/1.1" 404 162
+Jun 11 16:00:02 server nginx[3100]: 91.92.251.103 - - "GET /wp-admin HTTP/1.1" 404 162
+Jun 11 16:00:03 server nginx[3100]: 91.92.251.103 - - "GET /phpmyadmin HTTP/1.1" 404 162
+Jun 11 16:00:04 server nginx[3100]: 91.92.251.103 - - "GET /.env HTTP/1.1" 404 162
+Jun 11 16:00:05 server nginx[3100]: 91.92.251.103 - - "GET /config.php HTTP/1.1" 404 162
+Jun 11 16:00:06 server nginx[3100]: 91.92.251.103 - - "GET /backup.sql HTTP/1.1" 404 162
+Jun 11 16:00:07 server nginx[3100]: 91.92.251.103 - - "GET /shell.php HTTP/1.1" 404 162
+Jun 11 16:00:08 server nginx[3100]: 91.92.251.103 - - "GET /xmlrpc.php HTTP/1.1" 404 162
+Jun 11 16:00:09 server nginx[3100]: 91.92.251.103 - - "GET /.git/config HTTP/1.1" 404 162
+Jun 11 16:00:10 server nginx[3100]: 91.92.251.103 - - "GET /api/v1/users HTTP/1.1" 401 64
+Jun 11 16:00:11 server kernel: [UFW BLOCK] IN=eth0 SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=8080 SPT=61001
+Jun 11 16:00:12 server kernel: [UFW BLOCK] IN=eth0 SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=9200 SPT=61002
+Jun 11 16:00:13 server kernel: [UFW BLOCK] IN=eth0 SRC=91.92.251.103 DST=192.168.1.10 PROTO=TCP DPT=3306 SPT=61003
+
+# --- 17:30 Normal end of day ---
+Jun 11 17:30:00 server sshd[4400]: Accepted publickey for bob from 10.10.1.101 port 55600 ssh2
+Jun 11 17:30:01 server sudo[4401]: bob : COMMAND=/usr/bin/git pull
+Jun 11 18:00:00 server sshd[4400]: pam_unix(sshd:session): session closed for user bob
+Jun 11 18:30:00 server nginx[3100]: 10.10.1.50 - - "GET /api/logout HTTP/1.1" 200 32
+
+# --- 22:00 Normal backup ---
+Jun 11 22:00:00 server cron[5000]: (root) CMD (/opt/backup/nightly.sh)
+Jun 11 22:00:01 server sshd[5001]: Accepted publickey for backup from 10.0.0.5 port 44100 ssh2
+Jun 11 22:35:00 server sshd[5001]: pam_unix(sshd:session): session closed for user backup
+Jun 11 23:59:00 server systemd[1]: Daily cleanup completed

@@ -1,0 +1,15 @@
+NIRO — RandomForest Classification Report
+Dataset: data\training\labeled.jsonl  |  Samples: 20565
+=======================================================
+              precision    recall  f1-score   support
+
+      BENIGN       0.98      0.94      0.96      1610
+       T1041       0.61      0.51      0.56       224
+   T1071.001       0.96      0.20      0.33       339
+   T1110.001       0.81      0.89      0.85       660
+       T1498       0.93      0.98      0.95       639
+   T1595.001       0.71      0.99      0.83       641
+
+    accuracy                           0.86      4113
+   macro avg       0.83      0.75      0.75      4113
+weighted avg       0.88      0.86      0.85      4113

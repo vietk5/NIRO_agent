@@ -1,0 +1,9 @@
+{
+  "ticket_id": "INC-20260611-DDOS-001",
+  "alert_id": "DDOS-001",
+  "severity": "HIGH",
+  "summary": "DDOS from 198.51.100.77 | MITRE: T1498",
+  "assigned_to": "SOC-TEAM",
+  "status": "OPEN",
+  "created_at": "2026-06-11T19:06:09.650525+00:00"
+}

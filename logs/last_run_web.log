@@ -1,0 +1,184 @@
+
+#################################################################
+  NIRO-PI -- Full Pipeline (Parallel + Subagent)
+#################################################################
+  Alert ID          : WEB-001
+  Source IP         : 91.92.251.103
+  RF Class          : WebScan  conf=85%
+  Desc              : Web vulnerability scan — probing /admin, /wp-admin, /phpmyadmin, /.env
+
+  [CONFIG] Loaded from: pipeline.yaml
+  [+] stage0_triage          mode=sequential   timeout=20s
+  [+] stage1_collection      mode=parallel     timeout=30s  agents=[[+]recon [+]log_collect [+]pcap]
+  [+] stage2_analysis        mode=parallel     timeout=60s  agents=[[-]ml_classify [+]mitre_map]
+  [+] stage3a_response       mode=sequential   timeout=300s
+  [+] stage3b_report         mode=sequential   timeout=60s
+
+
+=================================================================
+  STAGE 0 -- TRIAGE AGENT
+=================================================================
+       >> route_alert({"action": "escalate", "priority": 9, "justification": "Web )
+  Action            : ESCALATE
+  Priority          : 9/10
+  Reason            : Web vulnerability scan rõ ràng từ IP công cộng (91.92.251.103) nhắm và
+  Duration          : 8.3s
+
+=================================================================
+  STAGE 1 -- [PARALLEL]: recon + log_collector + pcap_analyzer
+=================================================================
+  [STAGE1      ] mode=parallel  agents=['recon', 'log_collect', 'pcap']
+  [LOG-COLLECT] Starting — searching auth/firewall/syslog
+  [PCAP        ] Starting — extracting flow features
+  [PCAP        ] Done — sig=UNKNOWN risk=0.20 anomalies=0
+  [LOG-COLLECT] Done — failed_auth=0 fw_blocks=20 pattern=UNKNOWN
+       → tool_call: check_ip_reputation({"ip": "91.92.251.103"})
+         OK check_ip_reputation [1266ms]
+       → tool_call: check_virustotal({"ip": "91.92.251.103"})
+         OK check_virustotal [1193ms]
+       → tool_call: scan_ports({"target_ip": "91.92.251.103", "ports": [21, 22, 23, 25, 53, 80, 110, 111, 135, )
+         OK scan_ports [27179ms]
+       → tool_call: whois_lookup({"ip": "91.92.251.103"})
+         OK whois_lookup [2ms]
+       → tool_call: grab_banner({"target_ip": "91.92.251.103", "port": 80})
+         OK grab_banner [2006ms]
+       → tool_call: grab_banner({"target_ip": "91.92.251.103", "port": 443})
+         OK grab_banner [2014ms]
+       → tool_call: grab_banner({"target_ip": "91.92.251.103", "port": 8080})
+         OK grab_banner [2014ms]
+       → tool_call: resolve_dns({"hostname": "91.92.251.103"})
+         OK resolve_dns [0ms]
+       → tool_call: generate_risk_profile({"target_ip": "91.92.251.103", "threat_score": 45, "risk_level": "medium", "isTo)
+         OK generate_risk_profile [0ms]
+  [STAGE1      ] Done in 55.8s (concurrently)
+
+  -- Stage 1 Summary --
+  IP Risk           : score=45 level=medium tor=False
+  Log Pattern       : failed_auth=0 fw_blocks=20 pattern=UNKNOWN
+  PCAP Sig          : sig=UNKNOWN risk=0.2 anomalies=0
+  Duration          : 55.8s
+
+=================================================================
+  STAGE 2 -- [PARALLEL]: ml_classifier + mitre_mapper
+=================================================================
+  [STAGE2      ] mode=parallel  agents=['ml_classify', 'mitre_map']
+  [ML-CLASSIFY ] Starting — WebScan conf=85%
+  [MITRE-MAP   ] Starting — building feature vector
+  [MITRE-MAP   ] ⚠️  ANOMALY detected (score=-0.652)
+  [MITRE-MAP   ] Done — best=T1071.001 (Application Layer Protocol: Web) sim=0.431 known=False [sklearn:RandomForestClassifier] ⚠️ANOMALY=-0.65
+       → tool_call: classify_incident({"incident_type": "PORT_SCAN", "severity": "MEDIUM", "mitre_technique": "T1595.0)
+         OK classify_incident [0ms]
+  [ML-CLASSIFY ] Done — PORT_SCAN | MEDIUM | T1595.001 | conf=75%
+  [STAGE2      ] Done in 12.6s (concurrently)
+
+  -- Stage 2 Summary --
+  Incident Type     : PORT_SCAN
+  Severity (2A)     : MEDIUM
+  MITRE 2A (ML)     : T1595.001
+  MITRE 2B (cos)    : ?
+  2A vs 2B          : [CONFLICT] -> 2C will resolve
+  Confidence        : 75%
+  Duration          : 12.6s
+
+=================================================================
+  STAGE 2C -- ORCHESTRATOR + INVESTIGATOR SUBAGENTS
+=================================================================
+       → tool_call: spawn_subagent({"investigator_type": "portscan", "brief": "=== ALERT WEB-001 ===\nSrc IP: 91.92)
+
+  ┌─ [SPAWN] PORTSCAN-Investigator
+  │  Brief: === ALERT WEB-001 ===
+Src IP: 91.92.251.103 (Bulgaria)
+Dst IP: 192.168.1.10:80
+Protocol: TCP
+Duration: 15s, 180 packets,...
+    [PortScan-Investigator] Starting investigation...
+       → tool_call: check_firewall_log({"src_ip": "91.92.251.103", "log_path": "data/input/logs/firewall.log"})
+         OK check_firewall_log [0ms]
+       → tool_call: check_ip_reputation({"ip": "91.92.251.103"})
+         OK check_ip_reputation [770ms]
+       → tool_call: check_virustotal({"ip": "91.92.251.103"})
+         OK check_virustotal [749ms]
+       → tool_call: whois_lookup({"ip": "91.92.251.103"})
+         OK whois_lookup [1ms]
+       → tool_call: analyze_scan_pattern({"ports_scanned": [80], "duration_sec": 15})
+         OK analyze_scan_pattern [0ms]
+       → tool_call: submit_findings({"summary": "IP 91.92.251.103 (Bulgaria, Ikt Solutions Ltd) th\u1ef1c hi\u1ec7n )
+         OK submit_findings [0ms]
+    [PortScan-Investigator] Done — risk=high conf=85% iter=6
+  └─ [PortScan-Investigator] risk=high conf=85%
+         OK spawn_subagent [22823ms]
+       → tool_call: finalize_investigation({"overall_risk": "high", "final_action": "block", "verdict_summary": "IP 91.92.2)
+         OK finalize_investigation [0ms]
+
+  ══ ORCHESTRATOR VERDICT ══
+  Risk:    HIGH
+  Action:  BLOCK
+  MITRE:   T1595.001
+  Subagents spawned: 1
+  Duration: 42.5s
+
+  -- Subagent Summary --
+  Subagents spawned : 1
+    >> portscan
+  Overall Risk      : HIGH
+  Recommended       : BLOCK
+  MITRE (final)     : T1595.001
+  Duration          : 42.5s
+
+=================================================================
+  STAGE 3A -- RESPONSE AGENT (containment)
+=================================================================
+  [RESPONSE    ] Ticket created: INC-20260615-WEB-001
+
+  [NOTIFY → #security-alerts] [HIGH] PORT_SCAN detected from 91.92.251.103 | Alert: WEB-001 | MITRE: T1595.001
+
+  ======================================================
+  [!] APPROVAL REQUIRED
+      Action  : block_ip_address
+      IP      : 91.92.251.103
+      Reason  : PORT_SCAN — T1595.001
+  NIRO_WAITING_FOR_APPROVAL
+  ======================================================
+
+  #################################################################
+  PIPELINE PAUSED — WAITING FOR APPROVAL
+  #################################################################
+  Action  : block_ip_address
+  IP      : 91.92.251.103
+  Ticket  : INC-20260615-WEB-001
+  NIRO_WAITING_FOR_APPROVAL alert=data/input/alerts/latest3/webscan.json
+
+#################################################################
+  NIRO-PI -- RESUME FROM STAGE 3A (approval received)
+#################################################################
+  Alert: WEB-001  IP: 91.92.251.103
+  (Stages 0-2C da hoan thanh, chi chay lai Stage 3A+3B)
+
+=================================================================
+  STAGE 3A -- RESPONSE AGENT (containment) [RESUME]
+=================================================================
+  [RESPONSE    ] Ticket created: INC-20260615-WEB-001
+
+  [NOTIFY → #security-alerts] [HIGH] PORT_SCAN detected from 91.92.251.103 | Alert: WEB-001 | MITRE: T1595.001
+  [X] Rejected: block_ip_address (response='reject')
+  Ticket            : INC-20260615-WEB-001
+  Actions           : ['created_ticket:INC-20260615-WEB-001', 'notified_analyst', 'block_rejected:91.92.251.103']
+  Blocked           : []
+  Duration          : 0.0s
+
+=================================================================
+  STAGE 3B -- REPORT AGENT [RESUME]
+=================================================================
+  [REPORT      ] Generating IR report...
+  [REPORT      ] Done → reports\91_92_251_103_20260615_103408_incident.md
+  Report saved      : reports\91_92_251_103_20260615_103408_incident.md
+  Duration          : 0.0s
+
+#################################################################
+  PIPELINE COMPLETE (resumed)
+#################################################################
+  Verdict           : HIGH -> BLOCK
+  Blocked           : none
+  Response          : ticket=INC-20260615-WEB-001
+  IR Report         : reports\91_92_251_103_20260615_103408_incident.md
+

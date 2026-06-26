@@ -1,0 +1,235 @@
+{
+  "alert": {
+    "alert_id": "SCAN-001",
+    "src_ip": "45.33.32.156",
+    "dst_ip": "192.168.1.10",
+    "dst_port": 0,
+    "protocol": "TCP",
+    "rf_class": "PortScan",
+    "ml_confidence": 0.88,
+    "bytes_in": 3200,
+    "bytes_out": 1800,
+    "packets": 480,
+    "duration": 10.0,
+    "description": "Port scan across 10 ports from 45.33.32.156",
+    "timestamp": "2026-06-11T19:06:11.903878+00:00"
+  },
+  "triage_result": {
+    "routing": {
+      "action": "escalate",
+      "priority": 9,
+      "justification": "Port scan t\u1eeb IP c\u00f4ng c\u1ed9ng (45.33.32.156) v\u00e0o host n\u1ed9i b\u1ed9 (192.168.1.10) tr\u00ean 10 c\u1ed5ng. ML confidence cao (0.88), l\u01b0u l\u01b0\u1ee3ng qu\u00e9t nhanh (480 packets/10s). dst_port=0 cho th\u1ea5y \u0111\u00e2y c\u00f3 th\u1ec3 l\u00e0 qu\u00e9t SYN raw. \u0110\u00e2y l\u00e0 h\u00e0nh vi t\u1ea5n c\u00f4ng r\u00f5 r\u00e0ng t\u1eeb b\u00ean ngo\u00e0i v\u00e0o m\u1ea1ng n\u1ed9i b\u1ed9, c\u1ea7n ph\u1ea3n \u1ee9ng ngay l\u1eadp t\u1ee9c.",
+      "key_indicators": [
+        "src_ip l\u00e0 IP c\u00f4ng c\u1ed9ng",
+        "dst_ip l\u00e0 IP n\u1ed9i b\u1ed9 (RFC-1918)",
+        "PortScan - qu\u00e9t 10 c\u1ed5ng",
+        "ML confidence 0.88",
+        "dst_port=0 (b\u1ea5t th\u01b0\u1eddng)",
+        "480 packets trong 10 gi\u00e2y"
+      ]
+    },
+    "alert": {
+      "alert_id": "SCAN-001",
+      "src_ip": "45.33.32.156",
+      "dst_ip": "192.168.1.10",
+      "dst_port": 0,
+      "protocol": "TCP",
+      "rf_class": "PortScan",
+      "ml_confidence": 0.88,
+      "bytes_in": 3200,
+      "bytes_out": 1800,
+      "packets": 480,
+      "duration": 10.0,
+      "description": "Port scan across 10 ports from 45.33.32.156",
+      "timestamp": "2026-06-11T19:06:11.903878+00:00"
+    },
+    "error": null
+  },
+  "stage1_results": {
+    "pcap": {
+      "flow_features": {
+        "packet_count": 480,
+        "total_bytes": 5000,
+        "duration_sec": 10.0,
+        "packets_per_sec": 48.0,
+        "bytes_per_packet": 10.4,
+        "bytes_per_sec": 500.0,
+        "dst_port": 0,
+        "bytes_in": 3200,
+        "bytes_out": 1800,
+        "payload_entropy": 3.0,
+        "syn_count": 384,
+        "source": "derived_from_alert"
+      },
+      "anomaly_indicators": [
+        "HIGH_SYN_COUNT"
+      ],
+      "flow_signature_match": "PORT_SCAN",
+      "risk_score": 0.62,
+      "error": null
+    },
+    "log_collect": {
+      "auth_log_events": [
+        "# Port Scan t\u00e1\u00bb\u00ab 45.33.32.156 (Shodan scanner)",
+        "Jun 11 09:00:01 server sshd[3001]: Invalid user test from 45.33.32.156 port 60001",
+        "Jun 11 09:00:02 server sshd[3001]: Invalid user admin from 45.33.32.156 port 60002",
+        "Jun 11 09:00:03 server sshd[3001]: Invalid user root from 45.33.32.156 port 60003",
+        "Jun 11 09:00:04 server sshd[3001]: Invalid user user from 45.33.32.156 port 60004",
+        "Jun 11 09:00:05 server sshd[3001]: Connection closed by 45.33.32.156 port 60005 [preauth]",
+        "Jun 11 09:00:06 server sshd[3001]: Connection closed by 45.33.32.156 port 60006 [preauth]",
+        "Jun 11 09:00:07 server sshd[3001]: Connection closed by 45.33.32.156 port 60007 [preauth]"
+      ],
+      "firewall_events": [
+        "# Port Scan blocks \u00e2\u20ac\u201d 45.33.32.156",
+        "Jun 11 09:00:01 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=22 SPT=60001",
+        "Jun 11 09:00:02 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=80 SPT=60002",
+        "Jun 11 09:00:03 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=443 SPT=60003",
+        "Jun 11 09:00:04 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=3306 SPT=60004",
+        "Jun 11 09:00:05 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=5432 SPT=60005",
+        "Jun 11 09:00:06 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=6379 SPT=60006",
+        "Jun 11 09:00:07 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=27017 SPT=60007",
+        "Jun 11 09:00:08 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=8080 SPT=60008",
+        "Jun 11 09:00:09 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=8443 SPT=60009",
+        "Jun 11 09:00:10 server kernel: [UFW BLOCK] IN=eth0 SRC=45.33.32.156 DST=192.168.1.10 PROTO=TCP DPT=9200 SPT=60010"
+      ],
+      "syslog_events": [],
+      "audit_events": [
+        "{\"ts\": \"2026-06-11T16:24:13.550237+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"AUTO-002\", \"src_ip\": \"45.33.32.156\", \"rf_class\": \"PortScan\", \"prev_hash\": \"1598299b8492e391ff4a1d6e67d8b4bbd1607bc43ec405db0cf5c77066c5acd1\", \"hash\": \"1fb76ba757a138089c2212c87d6245ae166b121e088cb8d73fead97c2674a671\"}",
+        "{\"ts\": \"2026-06-11T16:24:20.665801+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"45.33.32.156\", \"prev_hash\": \"9e3091c7b51781efe903563c7152abc53b7478be7d5faf2e7a4f44fecf30f3b8\", \"hash\": \"40f7fb22d2f680341e196c30b1de7d809ebe2aeb2ddadb2be8dd4885404230ac\"}",
+        "{\"ts\": \"2026-06-11T18:51:14.490937+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"SCAN-001\", \"src_ip\": \"45.33.32.156\", \"rf_class\": \"PortScan\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"d11940d6cb150a8b3987edc25e3099e7c5dc88088e99fba815eab79a8ad81879\"}",
+        "{\"ts\": \"2026-06-11T18:51:22.604710+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"45.33.32.156\", \"prev_hash\": \"b35327cd82d47587dfb13e606cbd83951d5c301847517f59dcd75a376fa7daba\", \"hash\": \"b120e393f48a8bc5e766ac060c7bc5062bd4ab7bf4e951b7af584ac1d4179b63\"}",
+        "{\"ts\": \"2026-06-11T19:06:11.903888+00:00\", \"event\": \"ALERT_RECEIVED\", \"alert_id\": \"SCAN-001\", \"src_ip\": \"45.33.32.156\", \"rf_class\": \"PortScan\", \"prev_hash\": \"0000000000000000000000000000000000000000000000000000000000000000\", \"hash\": \"a8042b0985f9f5200606c971ec146f5f61011a82b4a1b7725b080fa51538530b\"}",
+        "{\"ts\": \"2026-06-11T19:06:21.049329+00:00\", \"event\": \"AGENT_START\", \"agent\": \"recon\", \"info\": \"45.33.32.156\", \"prev_hash\": \"47a5005af77fae448efd475b7f6955162b9422d98a695d6cdcf114f8ed9cc877\", \"hash\": \"f185b0af36202f4f7e45b7b44d3a624d92b59275dc637c81ec840d0f56347d7b\"}"
+      ],
+      "summary": {
+        "failed_auth_count": 4,
+        "blocked_connections": 11,
+        "targeted_ports": [
+          60001,
+          60002,
+          60003,
+          60004,
+          60005,
+          60006,
+          60007
+        ],
+        "attack_pattern": "SSH_BRUTE_FORCE",
+        "first_seen": "unknown",
+        "last_seen": "unknown",
+        "log_sources_checked": 4
+      },
+      "error": null
+    },
+    "recon": {
+      "error": "Timeout after 30.0s",
+      "timed_out": true
+    }
+  },
+  "stage2_results": {
+    "mitre_map": {
+      "query_vector": [
+        0.0,
+        0.3487,
+        0.632,
+        0.626,
+        0.0069,
+        0.0967,
+        0.375,
+        0.0,
+        0.1667,
+        0.88
+      ],
+      "top_techniques": [
+        {
+          "technique_id": "BENIGN",
+          "name": "False Positive / Benign Traffic",
+          "tactic": "N/A",
+          "similarity": 0.855,
+          "description": "Learned centroid from training data (BENIGN)"
+        },
+        {
+          "technique_id": "T1071.001",
+          "name": "Application Layer Protocol: Web",
+          "tactic": "Command and Control",
+          "similarity": 0.085,
+          "description": "Learned centroid from training data (T1071.001)"
+        },
+        {
+          "technique_id": "T1595.001",
+          "name": "Active Scanning: Scanning IP Blocks",
+          "tactic": "Reconnaissance",
+          "similarity": 0.035,
+          "description": "Learned centroid from training data (T1595.001)"
+        },
+        {
+          "technique_id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "tactic": "Credential Access",
+          "similarity": 0.02,
+          "description": "Learned centroid from training data (T1110.001)"
+        },
+        {
+          "technique_id": "T1498",
+          "name": "Network Denial of Service",
+          "tactic": "Impact",
+          "similarity": 0.005,
+          "description": "Learned centroid from training data (T1498)"
+        }
+      ],
+      "best_technique": "BENIGN",
+      "best_technique_name": "False Positive / Benign Traffic",
+      "best_tactic": "N/A",
+      "best_similarity": 0.855,
+      "is_known_technique": false,
+      "is_anomaly": true,
+      "anomaly_score": -0.6446,
+      "model_used": "sklearn:RandomForestClassifier",
+      "technique_risk_score": 0.257,
+      "error": null
+    },
+    "ml_classify": {
+      "classification": {
+        "incident_type": "PORT_SCAN",
+        "severity": "MEDIUM",
+        "mitre_technique": "T1595.001",
+        "mitre_tactic": "Reconnaissance",
+        "confidence": 0.88,
+        "is_true_positive": true,
+        "rationale": "Ph\u00e2n lo\u1ea1i PORT_SCAN d\u1ef1a tr\u00ean: (1) RF class g\u1ed1c l\u00e0 PortScan v\u1edbi ml_confidence=0.88, (2) PCAP flow signature = PORT_SCAN, (3) Anomaly HIGH_SYN_COUNT x\u00e1c nh\u1eadn SYN scan, (4) Bytes/packet = 10.4 (r\u1ea5t th\u1ea5p, \u0111\u1eb7c tr\u01b0ng scan), (5) 7 targeted ports (60001-60007) b\u1ea5t th\u01b0\u1eddng, (6) 11 firewall blocks. Kh\u00f4ng ph\u1ea3i SSH_BRUTE_FORCE v\u00ec failed_auth=4 < ng\u01b0\u1ee1ng 5. Severity MEDIUM v\u00ec AbuseIPDB score=0 (kh\u00f4ng reputation x\u1ea5u) nh\u01b0ng c\u00f3 evidence m\u1ea1nh t\u1eeb PCAP v\u00e0 logs. src_ip l\u00e0 public IP n\u00ean is_true_positive=True.",
+        "secondary_techniques": [
+          "T1046"
+        ]
+      },
+      "containment_steps": [
+        "Block source IP t\u1ea1i firewall",
+        "Rate-limit SYN packets t\u1eeb IP l\u1ea1",
+        "Review d\u1ecbch v\u1ee5 \u0111ang expose \u2014 \u0111\u00f3ng port kh\u00f4ng c\u1ea7n thi\u1ebft",
+        "C\u00e0i \u0111\u1eb7t network segmentation"
+      ],
+      "mitre_details": {
+        "name": "Active Scanning: Scanning IP Blocks",
+        "tactic": "Reconnaissance",
+        "containment": [
+          "Block source IP t\u1ea1i firewall",
+          "Rate-limit SYN packets t\u1eeb IP l\u1ea1",
+          "Review d\u1ecbch v\u1ee5 \u0111ang expose \u2014 \u0111\u00f3ng port kh\u00f4ng c\u1ea7n thi\u1ebft",
+          "C\u00e0i \u0111\u1eb7t network segmentation"
+        ]
+      },
+      "secondary_techniques": [
+        "T1046"
+      ],
+      "error": null
+    }
+  },
+  "response_result": null,
+  "report": {
+    "incident_id": "INC-20260611_190702-SCAN-001",
+    "report_path": "reports\\45_33_32_156_20260611_190702_incident.md",
+    "outcome": "MONITORED",
+    "error": null
+  },
+  "outcome": "MONITORED",
+  "error": null,
+  "pipeline_duration_sec": 50.34
+}

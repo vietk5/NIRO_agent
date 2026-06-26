@@ -1,0 +1,32 @@
+{
+  "timestamp": "20260612_135650",
+  "results": [
+    {
+      "alert_id": "BF-001",
+      "src_ip": "185.220.101.34",
+      "outcome": "TIMEOUT",
+      "severity": "?",
+      "report_path": null,
+      "duration": 120.063298699999,
+      "error": "Timeout after 120s"
+    },
+    {
+      "alert_id": "DNS-001",
+      "src_ip": "203.0.113.45",
+      "outcome": "TIMEOUT",
+      "severity": "?",
+      "report_path": null,
+      "duration": 120.04884019999736,
+      "error": "Timeout after 120s"
+    },
+    {
+      "alert_id": "WEB-001",
+      "src_ip": "91.92.251.103",
+      "outcome": "TIMEOUT",
+      "severity": "?",
+      "report_path": null,
+      "duration": 120.04935679999471,
+      "error": "Timeout after 120s"
+    }
+  ]
+}
